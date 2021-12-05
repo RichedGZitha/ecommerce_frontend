@@ -1,5 +1,11 @@
+body {
+  padding: 0;
+  margin:0;
+}
+
 .App {
   text-align: center;
+  height:100%;
 }
 
 .App-logo {
@@ -35,4 +41,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.btn-purple{
+  background-color: purple !important;
+  color:white !important;
+  border-color: inherit !important;
 }

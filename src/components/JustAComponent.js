@@ -1,5 +1,7 @@
 import logo from '../logo.svg';
 import '../App.css';
+import Button from 'react-bootstrap/Button';
+
 import { useSelector} from 'react-redux';
 import { useState } from "react";
 
@@ -28,6 +30,7 @@ function JustAComponent() {
    
 	
   return (
+
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -44,7 +47,7 @@ function JustAComponent() {
         </a>
 		
 		
-		<button type="button" onClick={increment}>Press Play</button>
+		<Button  variant="purple" size="lg" onClick={increment}>Press Play</Button>
 		
       </header>
     </div>
