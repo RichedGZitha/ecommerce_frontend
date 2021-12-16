@@ -22,7 +22,7 @@ function JustAComponent() {
    
    const increment = () =>{
 	
-		   console.log(data.login);
+		   // console.log(data.login);
 		setCounter(previousState => {
 					return previousState +=1;
     });
@@ -47,7 +47,7 @@ function JustAComponent() {
         </a>
 		
 		
-		<Button  variant="purple" size="lg" onClick={increment}>Press Play</Button>
+		<Button  variant="whiteborder" className="primary-color" size="lg" onClick={increment}>Press Play</Button>
 		
       </header>
     </div>

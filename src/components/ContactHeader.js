@@ -4,13 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Badge from 'react-bootstrap/Badge';
-import {LinkContainer} from 'react-router-bootstrap'
-import ToggleButton from 'react-bootstrap/ToggleButton'
 
 import { useSelector} from 'react-redux';
 import { useState } from "react";
-import Fragment from 'react';
 
 
 // maps the props to the reducer state.
@@ -21,9 +17,11 @@ const mapStateToProps = (state) => {
 		}
 	}
 
-const Header = ()=> {
+const ContactHeader = ()=> {
 	
    const data = useSelector(mapStateToProps);
+   const languages = ['English', 'Afrikaans', 'Zulu'];
+   const currencies = ['ZAR (R)', 'USD ($)', 'YEN'];
       
    const [counter, setCounter] = useState(0); 
    
@@ -42,13 +40,8 @@ const Header = ()=> {
 
             <Navbar bg="dark" variant="dark"> 
                 
-                
-                
                 <Container>
-                {/*<LinkContainer to="/"> */}
-                    
-                {/*</LinkContainer>*/}
-
+                
                     {/* The search bar nav */}
                     <Nav className="me-auto">
                         <Nav.Link href="mailto:email@email.com" className="d-none d-sm-block"> email@email.com</Nav.Link>
@@ -57,25 +50,33 @@ const Header = ()=> {
 
                     {/* right links */}
                     <Nav className="mr-auto">
+
+                        {/* Language dropdown */}
                         <NavDropdown title="Lang" id="collasible-nav-dropdown">
                             
-                                    <NavDropdown.Item href="/Admin">Eng (ZA)</NavDropdown.Item>
-                                    <NavDropdown.Item href="/OrderHistory">Zul (ZA)</NavDropdown.Item>
-                                    <NavDropdown.Item href="/Dashboard">AFRIK (ZA)</NavDropdown.Item>
-                                    <NavDropdown.Item href="/TrackOrder">Track Order</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Logout</NavDropdown.Item>
-                                    <NavDropdown.Item href="/Signin">Sign in</NavDropdown.Item>
-
+                            {
+                                languages.map((language, index) =>(
+                                    <NavDropdown.Item href="#" key={index}>{language}</NavDropdown.Item> 
+                                ))
+                            }
+                                    
                         </NavDropdown>
 
-                        <NavDropdown title="currency" id="collasible-nav-dropdown">
+                        {/* Currencies dropdown */}
+                        <NavDropdown title="Currency" id="collasible-nav-dropdown">
                             
-                            <NavDropdown.Item href="/Admin">US </NavDropdown.Item>
-                            <NavDropdown.Item href="/OrderHistory">R (ZA)</NavDropdown.Item>
-                            <NavDropdown.Item href="/Dashboard">AFRIK (ZA)</NavDropdown.Item>
+                            {
+                                currencies.map((currency, index)=>(
+                                    <NavDropdown.Item href="#" key={index}> {currency} </NavDropdown.Item>
+                                ))
+                            }
+                            
+                            
                         </NavDropdown>
 
-                        <Nav.Link href="#" onClick={increment}>Cart <Badge bg="success">{counter}</Badge></Nav.Link>
+
+                        {/* Cart naviagtion */}
+                        <Nav.Link href="#" onClick={increment}>Cart <span className="badge rounded-pill primary-color">{counter}</span></Nav.Link>
 
                     </Nav>
                 </Container>
@@ -85,4 +86,4 @@ const Header = ()=> {
 
 };
 
-export default Header;
+export default ContactHeader;
