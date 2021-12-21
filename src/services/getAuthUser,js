@@ -1,0 +1,30 @@
+'use strict'
+
+class authUser
+{
+	function getUserLocal(){
+		
+		const authUserJSON = localStorage.getItem('ecom_user_auth');
+
+		const authUser = JSON.parse(authUserJSON);
+
+		return authUser;
+
+	}
+
+	function setAccessTokewn(access){
+		
+		const authUserJSON = localStorage.getItem('ecom_user_auth');
+
+		const authUser = JSON.parse(authUserJSON);
+		authUser['access']= access;
+
+		const newUserAuth = JSON.stringify(authUser);
+
+		localStorage.setItem('ecom_user_auth', newUserAuth);
+
+	}
+
+}
+
+export default new authUser() as auth;

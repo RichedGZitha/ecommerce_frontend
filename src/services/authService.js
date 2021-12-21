@@ -80,7 +80,7 @@ async function refreshTokenRequest(refresh, dispatch)
                     
               });
 
-              return {'isError': isError, 'errors': error_messages, 'invalidToken': invalidToken};
+             // return {'isError': isError, 'errors': error_messages, 'invalidToken': invalidToken};
 }
 
 // logout function
@@ -112,11 +112,6 @@ async function login(email, password, dispatch){
 
                     // set result variable (object).
                     let result = {'access': access, 'refresh': refresh};
-
-                    // save to local storage.
-                    let resultJSON = JSON.stringify(result);
-                    localStorage.setItem('ecom_user_auth', resultJSON);
-
 
                     // update the store.
                     dispatch(actionCreators.loginActionCreator(result));
@@ -253,6 +248,67 @@ async function login(email, password, dispatch){
     }
 
 
+// login function.
+async function password_reset(email, dispatch){
+
+    let isError = false;
+    let error_messages = [];
+
+    const data = {'email': email};
+    const url = "/auth/v1/users/reset_password/";
+            
+        await axiosInstance.post(url, data, {headers: {
+                'Authorization': 'JWT',
+              }})
+              .then(function (response) {
+
+                if(response.data){
+                   
+                   console.log(response.data);
+
+                }
+                
+              })
+              .catch(function (error) {
+
+                    if(error.response)
+                    {
+                        
+                        const data = error.response.data;
+                         
+                        if(data !== undefined)
+                        {
+                                error_messages = [...error_messages, data['detail']];
+                        }
+                        
+                        
+                        // update the state.
+                        if(error_messages.length > 0)
+                        {
+                            isError = true;
+                        }
+
+                        else
+                        {
+                            error_messages = [...error_messages, 'Something went wrong.'];
+                            isError = true;
+                        }
+                    }
+
+                    // any other errors including network connection.
+                    else
+                    {
+                        error_messages = [...error_messages, 'Something went wrong. It might be your internet connection.'];
+                        isError = true;
+                    }
+                    
+              });
+
+              return {'isError': isError, 'errors': error_messages};
+    }
+
+
+
     export {
-            login, logout, refreshTokenRequest, register
+            login, logout, refreshTokenRequest, register, password_reset
     };

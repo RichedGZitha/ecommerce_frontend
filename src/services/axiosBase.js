@@ -1,4 +1,7 @@
 const axios = require('axios');
+
+import auth from './getAuthUser/auth';
+
 const baseURL = "http://127.0.0.1:8000/";
 
 const axiosInstance = axios.create({
@@ -7,13 +10,52 @@ const axiosInstance = axios.create({
     timeout: 50000,
     
     headers: {
-      'Authorization':localStorage.getItem('access_token') ? "JWT " + localStorage.getItem('access_token'): undefined,
+      'Authorization': auth.getUserLocal()['access'] ? "JWT " +  auth.getUserLocal()['access'] : undefined,
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
     
      
 });
+
+
+axiosInstance.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    const originalConfig = err.config;
+
+    if (originalConfig.url !== "/auth/v1/jwt/create/" && err.response) {
+      // Access Token was expired
+      if (err.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
+
+        try {
+            const rs = await instance.post("/auth/v1/jwt/refresh/", 
+
+            {
+              refresh: auth.getUserLocal()['refresh'],
+            });
+
+            const { accessToken } = rs.data;
+            auth.setAccessTokewn(accessToken);
+
+            return instance(originalConfig);
+        } catch (_error) {
+            return Promise.reject(_error);
+        }
+      }
+    }
+
+    return Promise.reject(err);
+  }
+
+);
+
+
+
+
 
 //axiosInstance.defaults.withCredentials = false;
 

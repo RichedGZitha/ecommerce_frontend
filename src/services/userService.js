@@ -35,4 +35,6 @@ async function getUserInfo(access, refresh, dispath)
     });
 
 
+
+	return {'isError': isError, 'invalidToken': invalidToken, 'errors': error_messages};
 }

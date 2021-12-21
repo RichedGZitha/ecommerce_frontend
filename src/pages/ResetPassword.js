@@ -9,20 +9,17 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react"
 
-import {login, refreshTokenRequest} from '../services/authService';
+import {password_reset} from '../services/authService';
 
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
-const getRefreshToken = (state) => state.loginReducer.refresh;
-	
-const Signin = ()=>{
+
+const ResetPassword = ()=>{
 
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [isError, setIsError] = useState(false);
-	const refresh = useSelector(getRefreshToken);
 
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
@@ -34,7 +31,6 @@ const Signin = ()=>{
        
     );
 
-    //const messages = [{'error':true, 'value':'testing'}, {'error':false, 'value':'testing 2'}];
     let history = useHistory();
 
     const handleEmailChange = (e) =>{
@@ -45,16 +41,8 @@ const Signin = ()=>{
         });
     }
 
-    const handlePasswordChange = (e) =>{
-        setPassword((prev)=>{
 
-            prev = e.target.value
-            return prev;
-        });
-    }
-	
-	
-    async function handleLoginPOST(e){
+    async function handleResetPOST(e){
 
             e.preventDefault();
 
@@ -66,19 +54,15 @@ const Signin = ()=>{
                 return [];
             });
             
-            
-            const loginResult = await login(email, password, dispatch);
-			
-			// call function to refresh token every 5 min.
-			setInterval(await refreshTokenRequest(refresh, dispatch),  5 * 60 * 1000);
+            const resetResult = await password_reset(email, dispatch);
 
             // if no request errors occured.
-            if (loginResult.isError === false)
+            if (resetResult.isError === false)
             {
                 // show notification.
                 store.addNotification({
-                    title: 'Login Successful',
-                    message: 'You have Successfully logged in to your account.',
+                    title: 'Password reset incomplete',
+                    message: `An email has been sent to ${email} with further instructions to complete the process.`,
                     type: 'success',                         // 'default', 'success', 'info', 'warning'
                     container: 'top-left',                // where to position the notifications
                     animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
@@ -96,7 +80,7 @@ const Signin = ()=>{
             {
                         
                let error_messages = [];
-               const errors_result = loginResult['errors'];
+               const errors_result = resetResult['errors'];
 
                 if(errors_result !== undefined)
                 {
@@ -124,7 +108,7 @@ const Signin = ()=>{
 
         <div className="row">
             <div className="col-12 col-md-6 offset-md-3">
-            <h1 className="offset-5">Sign In</h1>
+            <h1>Password Reset</h1>
 
                 {isError === true &&
                         <div>
@@ -133,30 +117,23 @@ const Signin = ()=>{
                 }
 
 
-                <Form id="loginForm" onSubmit={handleLoginPOST}>
-
+			<p className="lead text-wrap"> Enter your <strong>email address</strong> to reset your password. An email will be sent to the provided email address with further instruction.  </p>
+			
+			
+                <Form id="resetPasswordForm" onSubmit={handleResetPOST}>
+				
                     <div className="form-group mb-2">
                         <label forhtml="email">Email</label>
                         
                         <input id="email" type="email" name="email" className="form-control" placeholder="email@example.com" onChange={handleEmailChange} required />
                         
                     </div>
-
-                    <div className="form-group mb-2">
-                        <label forhtml="current-password">Password</label>
-                        
-                        <input id="current-password" type="password" name="current-password" className="form-control" placeholder="password" onChange={handlePasswordChange} required/>
-                        
-                    </div>
-
                     
                     <div className="form-group">
                         
-                        <input type="submit" role="button" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Sign in"/> 
+                        <input type="submit" role="button" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Reset Password"/> 
                         <br></br>
 
-                        <Alert.Link to="/reset-password" as={link} className="mr-auto">Forgot your Password?</Alert.Link>
-                        <br></br>
                         <Alert.Link to="/signup" as={link} className="mr-auto">No account? Sign up</Alert.Link>
                     </div>
 
@@ -168,4 +145,4 @@ const Signin = ()=>{
     </div>);
 }
 
-export default Signin;
+export default ResetPassword;
