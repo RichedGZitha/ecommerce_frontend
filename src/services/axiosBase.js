@@ -1,16 +1,18 @@
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
+
+import {getUserLocal, setAccessTokewn} from './getAuthUser';
 const axios = require('axios');
 
-import auth from './getAuthUser/auth';
-
-const baseURL = "http://127.0.0.1:8000/";
+const APIbaseURL = "http://127.0.0.1:8000";
+const FrontEnd = "http://127.0.0.1:3000"
 
 const axiosInstance = axios.create({
-    baseURL: baseURL,
+    baseURL: APIbaseURL,
     
     timeout: 50000,
     
     headers: {
-      'Authorization': auth.getUserLocal()['access'] ? "JWT " +  auth.getUserLocal()['access'] : undefined,
+      'Authorization': getUserLocal() !== undefined ? "Bearer " +  getUserLocal()["access"] : "Bearer hello",
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
@@ -19,45 +21,36 @@ const axiosInstance = axios.create({
 });
 
 
-axiosInstance.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalConfig = err.config;
 
-    if (originalConfig.url !== "/auth/v1/jwt/create/" && err.response) {
-      // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true;
 
-        try {
-            const rs = await instance.post("/auth/v1/jwt/refresh/", 
+// Function that will be called to refresh authorization
+const refreshAuthLogic = failedRequest => axios.post(APIbaseURL + '/auth/v1/jwt/refresh/', {
+                refresh: getUserLocal()['refresh'],
+              }).then(tokenRefreshResponse => {
+    
 
-            {
-              refresh: auth.getUserLocal()['refresh'],
-            });
+    const { access } = tokenRefreshResponse.data;
 
-            const { accessToken } = rs.data;
-            auth.setAccessTokewn(accessToken);
-
-            return instance(originalConfig);
-        } catch (_error) {
-            return Promise.reject(_error);
-        }
-      }
+    if(access !== undefined)
+    {
+      setAccessTokewn(access);
+      failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access;
     }
+ 
+    
 
-    return Promise.reject(err);
-  }
+    return Promise.resolve();
+}).catch(error =>{
 
-);
-
-
+      window.location.replace(FrontEnd + "/signin");
 
 
+})
 
-//axiosInstance.defaults.withCredentials = false;
+// Instantiate the interceptor
+createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic, {
+    pauseInstanceWhileRefreshing: true // default: false
+});
 
 
     //axiosInstance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';//'application/json'
@@ -70,4 +63,6 @@ axiosInstance.interceptors.response.use(
    // axiosInstance.defaults.headers.common['X-CSRFToken'] = 'WeQ4j2agiYkaJ46M4TpSUf3q2Es0hNkcuD4vmgWBReeP1HNx5mTvm3MWGAEGHtZ9';
 
 //axiosInstance.defaults.headers.post["WWW-Authenticate"]= "JWT realm=\"api\"";
+
+
 export default axiosInstance;

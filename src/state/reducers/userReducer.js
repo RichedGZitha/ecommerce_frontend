@@ -3,7 +3,7 @@ import {Types} from '../actions/actionTypes';
 
 let user = JSON.parse(localStorage.getItem('ecom_user'));
 
-const initState = user ? user : { username: undefined, id:undefined , email: undefined, first_name: undefined, last_name:undefined};
+const initState = user ? user : { username: undefined, id:undefined , email: undefined, first_name: undefined, last_name:undefined, isManager:false, isSeller:false};
 
 const userReducer = (state = initState, action) => {
 	
@@ -19,6 +19,8 @@ const userReducer = (state = initState, action) => {
 				email : action.user.email,
 				last_name:action.user.last_name,
 				first_name:action.user.first_name,
+				isSeller:action.user.isSeller,
+				isManager:action.user.isManager
 				
 			};
 				

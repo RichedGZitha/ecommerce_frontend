@@ -5,35 +5,32 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-import { useSelector} from 'react-redux';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+
+import { getCartCountStore} from '../services/cartService';
 
 // maps the props to the reducer state.
 const mapStateToProps = (state) => {
-		
-		return {
-			login: state.loginReducer,
-		}
-	}
+    
+    return {
+      cart: state.cartReducer,
+      cartCount: getCartCountStore(state.cartReducer),
+    }
+  }
+
 
 const ContactHeader = ()=> {
-	
-   const data = useSelector(mapStateToProps);
+
    const languages = ['English', 'Afrikaans', 'Zulu'];
    const currencies = ['ZAR (R)', 'USD ($)', 'YEN'];
-      
-   const [counter, setCounter] = useState(0); 
+   const cart = useSelector(mapStateToProps);
    
-   const increment = () =>{
-	
-		   console.log(data.login);
-		setCounter(previousState => {
-					return previousState +=1;
-    });
-   }
-   
-	
   return (
 
         <div>
@@ -76,7 +73,7 @@ const ContactHeader = ()=> {
 
 
                         {/* Cart naviagtion */}
-                        <Nav.Link href="#" onClick={increment}>Cart <span className="badge rounded-pill primary-color">{counter}</span></Nav.Link>
+                        <Nav.Link href="#" className="text-white">{cart.cartCount > 0?'Checkout':'Trolley'} <FontAwesomeIcon icon={faCartShopping} size="lg" /> <span className="badge rounded-pill primary-color">{cart.cartCount}</span></Nav.Link>
 
                     </Nav>
                 </Container>

@@ -18,6 +18,7 @@ const logoutActionCreator = () =>{
 
 	localStorage.removeItem('ecom_user_auth');
 	localStorage.removeItem('ecom_user');
+	localStorage.removeItem('ecom_user_profile');
 	
 	return {type:Types.LOGOUT};
 }
@@ -33,6 +34,26 @@ const updateUserActionCreator = (user) => {
 		type: Types.UPDATE_USER, user};
 }
 
+// update profile information.
+const updateProfileActionCreator = (profile) => { 
+
+	// save to local storage.
+    let resultJSON = JSON.stringify(profile);
+    localStorage.setItem('ecom_user_profile', resultJSON);
+	
+	return { 
+		type: Types.UPDATE_PROFILE, profile};
+}
+
+// update the cart store
+const updateCartActionCreator = (cart)=>{
+
+	return {
+		type:Types.UPDATE_CART, cart
+	};
+}
+
+
 
 export const actionCreators = {logoutActionCreator, 
-	loginActionCreator, updateUserActionCreator};
+	loginActionCreator, updateUserActionCreator, updateProfileActionCreator, updateCartActionCreator};

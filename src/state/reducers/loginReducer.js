@@ -12,14 +12,13 @@ const loginReducer = (state = initState, action) => {
 		case Types.LOGIN:
 		
 			// update the state
-			
 			return{
 
 				refresh: action.user_auth.refresh,
 				access: action.user_auth.access,
 				isAuthenticated : true,
 			};
-				
+		
 		case Types.LOGOUT:
 		{
 			return initState;

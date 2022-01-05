@@ -11,13 +11,19 @@ import Error404 from './pages/Error404';
 import Header from './components/Header';
 import ContactHeader from './components/ContactHeader';
 import ResetPassword from './pages/ResetPassword';
+import Home from './pages/Home';
+import ProductDetail from './pages/ProductDetail';
+import Newsletter from './components/Newsletter';
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import ReactNotifications from 'react-notifications-component';
 
 
 function App() {
+
+	const [cartCount, setCartCount] = useState(0);
+
   return (
 	  <Fragment>
 
@@ -27,12 +33,16 @@ function App() {
 			<Header logo={logo} />
 			
 			<Switch>
-				<Route path="/" exact component={JustAComponent}></Route>
+				<Route path="/" exact component={Home}></Route>
 				<Route path="/signin" component={Login}></Route>
 				<Route path="/signup" component={Register}></Route>
 				<Route path="/reset-password" component={ResetPassword}></Route>
+				<Route path="/product/:id" component={ProductDetail}></Route>
+
 				<Route component={Error404}></Route>
 			</Switch>
+
+			<Newsletter/>
         </BrowserRouter>
 
 	  </Fragment>

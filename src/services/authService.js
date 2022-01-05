@@ -11,9 +11,7 @@ async function refreshTokenRequest(refresh, dispatch)
     const url = "/auth/v1/jwt/refresh/";
     const data = {'refresh': refresh};
             
-    await axiosInstance.post(url, data, {headers: {
-                'Authorization': 'JWT',
-              }})
+    await axiosInstance.post(url, data)
               .then(function (response) {
 
                 if(response.data){
@@ -95,49 +93,36 @@ async function login(email, password, dispatch){
 
     let isError = false;
     let error_messages = [];
+    let access = '';
+    let refresh = '';
 
-    const data = {'email': email, 'password': password};
-    const url = "/auth/v1/jwt/create";
+    const data_ = {'email': email, 'password': password};
+    const url = "/auth/v1/jwt/create/";
             
-        await axiosInstance.post(url, data, {headers: {
-                'Authorization': 'JWT',
-              }})
+       await axiosInstance.post(url, data_)
               .then(function (response) {
 
                 if(response.data){
                    
                     // save response to redux store.
-                    const access = response.data['access'];
-                    const refresh = response.data['refresh'];
-
-                    // set result variable (object).
-                    let result = {'access': access, 'refresh': refresh};
-
-                    // update the store.
-                    dispatch(actionCreators.loginActionCreator(result));
-
+                     access = response.data['access'];
+                     refresh = response.data['refresh'];
                 }
                 
               })
               .catch(function (error) {
 
-                    if(error.response)
+                    if(error.response !== undefined)
                     {
                         
-                        const data = error.response.data;
+                        const result = error.response.data;
                          
-                        if(data !== undefined)
+                        if(result !== undefined)
                         {
-                                error_messages = [...error_messages, data['detail']];
+                                error_messages = [...error_messages, result['detail']];
+                                isError = true;
                         }
                         
-                        
-                        // update the state.
-                        if(error_messages.length > 0)
-                        {
-                            isError = true;
-                        }
-
                         else
                         {
                             error_messages = [...error_messages, 'Something went wrong.'];
@@ -155,7 +140,24 @@ async function login(email, password, dispatch){
               });
 
 
-              return {'isError': isError, 'errors': error_messages};
+            if(isError === false)
+            {
+
+                // set result variable (object).
+                let result = {'access': access, 'refresh': refresh};
+                
+                // update the store.
+                dispatch(actionCreators.loginActionCreator(result));
+
+                return {'isError': isError, 'errors': error_messages, 'auth': result};
+            }
+
+            else
+            {
+                return {'isError': isError, 'errors': error_messages, 'auth': ''};
+            }
+
+            
     }
 
 
@@ -175,9 +177,7 @@ async function login(email, password, dispatch){
                 "re_password":confirmpassword,
               };
 
-              await axiosInstance.post(url, user, {headers: {
-                'Authorization': 'JWT',
-              }})
+              await axiosInstance.post(url, user)
               .then(function (response) {
                 
                 if(response.data)
@@ -257,9 +257,7 @@ async function password_reset(email, dispatch){
     const data = {'email': email};
     const url = "/auth/v1/users/reset_password/";
             
-        await axiosInstance.post(url, data, {headers: {
-                'Authorization': 'JWT',
-              }})
+        await axiosInstance.post(url, data)
               .then(function (response) {
 
                 if(response.data){

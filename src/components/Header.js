@@ -7,11 +7,16 @@ import Badge from 'react-bootstrap/Badge';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import { Link as link } from 'react-router-dom'
+import { Link as link, useHistory } from 'react-router-dom'
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import {logout} from '../services/authService';
+import {getAllCategories} from '../services/productService';
+
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
 
 // maps the props to the reducer state.
@@ -24,13 +29,53 @@ const mapStateToProps = (state) => {
 
 const Header = ({logo})=> {
 	
-   const data = useSelector(mapStateToProps);
-   const categories = ['All','Electronics', 'Camping', 'Tools', 'Kitchen'];
+  const data = useSelector(mapStateToProps);
+   const [categories, setCategories] = useState(['All','Electronics', 'Camping', 'Tools', 'Kitchen']);
    const [notifsCount, setNotifsCount] = useState(0);
    const dispatch = useDispatch();
+   const history = useHistory();
 
-   const logoutHandler = ()=>{
+   useEffect(()=> {
+        
+       
+         (async () => {
+              const categories = await getAllCategories();
+
+              if(categories.isError !== true)
+              {
+                setCategories((prev)=>{
+
+
+                    return categories.categories;
+                })
+
+              }
+            })();
+    
+
+  }, []);
+
+
+
+const logoutHandler = ()=>{
         logout(dispatch);
+
+        // show notification.
+        store.addNotification({
+            title: 'Logout Successful',
+            message: 'You have Successfully logged out to your account.',
+            type: 'info',                         // 'default', 'success', 'info', 'warning'
+            container: 'top-left',                // where to position the notifications
+            animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+            animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+            dismiss: {
+                        duration: 0
+                    }
+                    });
+
+
+        history.push('/signin');
+
    }
    
   return (

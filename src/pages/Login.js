@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react"
 
 import {login, refreshTokenRequest} from '../services/authService';
+import {getUserInfo} from '../services/userService';
 
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
@@ -67,28 +68,38 @@ const Signin = ()=>{
             });
             
             
-            const loginResult = await login(email, password, dispatch);
+            const loginResult =  await login(email, password, dispatch);
 			
 			// call function to refresh token every 5 min.
-			setInterval(await refreshTokenRequest(refresh, dispatch),  5 * 60 * 1000);
+			//setInterval(await refreshTokenRequest(refresh, dispatch),  5 * 60 * 1000);
 
             // if no request errors occured.
             if (loginResult.isError === false)
             {
-                // show notification.
-                store.addNotification({
-                    title: 'Login Successful',
-                    message: 'You have Successfully logged in to your account.',
-                    type: 'success',                         // 'default', 'success', 'info', 'warning'
-                    container: 'top-left',                // where to position the notifications
-                    animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
-                    animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
-                    dismiss: {
-                      duration: 0
-                    }
-                });
 
-                history.push('/');
+                const auth = await loginResult.auth;
+                const updateUser = await getUserInfo(dispatch);
+
+                if(updateUser.isError === false)
+                {
+                        // show notification.
+                    store.addNotification({
+                        title: 'Login Successful',
+                        message: 'You have Successfully logged in to your account.',
+                        type: 'success',                         // 'default', 'success', 'info', 'warning'
+                        container: 'top-left',                // where to position the notifications
+                        animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+                        animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+                        dismiss: {
+                          duration: 0
+                        }
+                    });
+
+                    history.push('/');
+
+                }
+
+                
 
             }
                 
