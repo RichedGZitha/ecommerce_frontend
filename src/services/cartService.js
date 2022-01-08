@@ -1,6 +1,7 @@
 import axiosInstance from "./axiosBase";
 import {CONSTANTS} from '../constants';
 import  { actionCreators } from '../state/actions/actionCreators';
+import {header} from './header';
 
 
 // get the index of the product item.
@@ -31,13 +32,26 @@ const removeFromCart = (id, dispatch) =>{
     if(cartJSON !== null)
     {
         let cart = JSON.parse(cartJSON);
-        let newCart =  cart.filter((obj) =>obj.id !== id);
+        let newCart =  cart.filter((obj) =>{
+            
+            return Number(obj.id) !== Number(id);
+
+        });
 
         localStorage.setItem(CONSTANTS.ECOM_CART, JSON.stringify(newCart));
-        dispatch(actionCreators.updateCartActionCreator(cart));
+        dispatch(actionCreators.updateCartActionCreator(newCart));
+
+        //console.log(newCart);
 
     }
 
+}
+
+// remove everything in cart
+const removeAllCart = (dispatch) =>{
+
+    localStorage.removeItem(CONSTANTS.ECOM_CART);
+    dispatch(actionCreators.updateCartActionCreator([]));
 }
 
 // get cart number count from localstorage
@@ -152,10 +166,115 @@ const addToCart = (id, name, unitprice, img_url, quantity = 1, dispatch)=>
 }
 
 
+// calculate the sub total.
+const calculateSubtotalPrice = (cart)=>
+{
+   let cost = 0.0;
+   for(let i =0;i < cart.length;i++)
+   {
+        cost +=cart[i]['price'];
+   }
+
+
+   return cost;
+
+}
+
+
+// calculate the tax total.
+const calculateTax = (cart, tax_rate)=>
+{
+   let cost = 0.0;
+   for(let i =0;i < cart.length;i++)
+   {
+        cost +=cart[i]['price'];
+   }
+
+
+   return cost * tax_rate;
+
+}
+
+
+// get coupon discount
+// calculate the tax total.
+// TODO: Call the API / Backend.
+const getDiscount = (code)=>
+{
+   let cost = 0.0;
+   
+
+
+   return cost;
+
+}
+
+
+// calculate the shipping cost.
+// TODO: Call the API / Backend.
+const getShippingCost = ()=>
+{
+   let cost = 0.0;
+   
+
+
+   return cost;
+
+}
+
+// calculate the grand total.
+const calculateGrandTotal = (cart, tax_rate)=>
+{
+   let tax = calculateTax(cart, tax_rate);
+   let discount = getDiscount('code here');
+   let shipping = getShippingCost()
+   let subtoatl = calculateSubtotalPrice(cart);
+   
+   let cost = subtoatl + tax + shipping - discount 
+   return cost ;
+
+}
+
+// update single item
+const updateSingleItem = (id, quantity, dispatch)=>{
+
+
+    let cartJSON = localStorage.getItem(CONSTANTS.ECOM_CART);
+    
+    if(cartJSON !== null)
+    {
+        let cart = JSON.parse(cartJSON);
+
+        // check if item id exists already.
+        const index = getItemIndex(id, cart);
+        if(index !== -1)
+        {
+            cart[index].quantity = quantity;
+            cart[index].price = quantity * cart[index].unitprice;
+
+            localStorage.setItem(CONSTANTS.ECOM_CART, JSON.stringify(cart));
+            dispatch(actionCreators.updateCartActionCreator(cart));
+        }
+        
+    }
+
+
+}
+
+
 export  {
 	addToCart,
     removeFromCart,
     getAllCartProducts,
     getCartCount,
-    getCartCountStore
+    getCartCountStore,
+    calculateSubtotalPrice,
+    calculateGrandTotal,
+    getDiscount,
+    getShippingCost,
+    calculateTax,
+    updateSingleItem,
+    removeAllCart
+
+
 };

@@ -115,3 +115,19 @@ body {
   min-width: 188px !important;
   min-height: 288px !important;
 }
+
+.cart-grandtotal{
+
+      color: #1c8644;
+      font-size: 1.84615rem;
+      font-weight: bold;
+      text-align: right;
+}
+
+.cart-subtotals
+{
+    color: #4d4d4f;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.38462rem;
+}

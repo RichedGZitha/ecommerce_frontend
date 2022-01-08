@@ -4,12 +4,13 @@ import Form from 'react-bootstrap/Form';
 import { Link as link } from 'react-router-dom'
 
 //import { useSelector} from 'react-redux';
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom';
 import { store } from 'react-notifications-component';
 
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import {CONSTANTS} from '../constants';
 
 import {register as RegisterAuth} from '../services/authService';
 
@@ -23,6 +24,12 @@ const Register = ()=>{
 
     const [errors, setErrors] = useState([]);
 	let history = useHistory();
+
+    useEffect(()=>{
+
+            document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Signup`;
+
+    }, []);
 
     // submit post request
     async function registerPOST(e){

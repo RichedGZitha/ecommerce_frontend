@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
     return {
       user: state.userReducer,
       profile:state.userProfileReducer,
-      isLoggegIn: state.userReducer.id !== undefined ? true : false, 
+      isLoggegIn: state.loginReducer.isAuthenticated, 
     }
   }
 
@@ -95,7 +95,6 @@ function ProductReviews({ productIDProp = -1}) {
       {
         setPastReviews((prev)=>[...reviews.reviews]);
 
-
         // editable review
         const editable = (pastReviews.filter((rev)=>rev.id === user.user.id))[0];
 
@@ -132,8 +131,6 @@ function ProductReviews({ productIDProp = -1}) {
    // submit a review.
    const handleReviewSubmit = async(e)=>{
         e.preventDefault();
-
-      console.log(user + " - " + stars + " -  " + review );
 
       if(productID !== -1 && user.isLoggegIn === true)
       {
@@ -264,7 +261,7 @@ function ProductReviews({ productIDProp = -1}) {
 
       else if(count === 3)
       {
-        color = "bg-warning";
+        color = "bg-primary";
       }
 
       else
@@ -349,7 +346,7 @@ function ProductReviews({ productIDProp = -1}) {
                                   </div>
                                 </div>
 
-                                { rev.user === user.user.id && user.user.id != undefined
+                                { rev.user === user.user.id && user.isLoggegIn === true
                                   ?
                                 <div className="row">
                                   <div className="col-12">

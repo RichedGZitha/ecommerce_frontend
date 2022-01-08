@@ -1,6 +1,6 @@
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-
 import {getUserLocal, setAccessTokewn} from './getAuthUser';
+
 const axios = require('axios');
 
 const APIbaseURL = "http://127.0.0.1:8000";
@@ -12,10 +12,9 @@ const axiosInstance = axios.create({
     timeout: 50000,
     
     headers: {
-      'Authorization': getUserLocal() !== undefined ? "Bearer " +  getUserLocal()["access"] : "Bearer hello",
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
     
      
 });
@@ -34,7 +33,7 @@ const refreshAuthLogic = failedRequest => axios.post(APIbaseURL + '/auth/v1/jwt/
     if(access !== undefined)
     {
       setAccessTokewn(access);
-      failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access;
+      failedRequest.response.config.headers['Authorization'] = 'Bearer ' + access;
     }
  
     

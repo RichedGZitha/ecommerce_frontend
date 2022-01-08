@@ -1,9 +1,17 @@
 import '../App.css';
 import Alert from 'react-bootstrap/Alert';
+import {CONSTANTS} from '../constants';
+import {useEffect} from 'react';
 
-const doesNotExist = ()=>{
+const DoesNotExist = ()=>{
 
     const messages = [{'error':true, 'value':'testing'}, {'error':false, 'value':'testing 2'}];
+
+    useEffect(()=>{
+
+        document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Page Not Found`;
+
+    }, []);
 
     return (<div className="container">
 
@@ -33,4 +41,4 @@ const doesNotExist = ()=>{
     </div>);
 }
 
-export default doesNotExist;
+export default DoesNotExist;

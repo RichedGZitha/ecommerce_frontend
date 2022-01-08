@@ -21,7 +21,7 @@ const loginReducer = (state = initState, action) => {
 		
 		case Types.LOGOUT:
 		{
-			return initState;
+			return { refresh: undefined, access: undefined, isAuthenticated: false};
 		}
 		
 		default:

@@ -51,7 +51,7 @@ function ProductItem({product, isSpecial = false, isFeatured = false, membership
 
             {isSpecial
             ? 
-              <p><span className="text-decoration-line-through small">R {product.Price}</span> <span className="text-danger text-nowrap">R {product.Price}</span></p>
+              <p><span className="text-decoration-line-through small">R {product.Price}</span> <span className="text-danger text-nowrap">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.Price)}</span></p>
             : <p className="text-danger">R {product.Price}</p>}
 
 

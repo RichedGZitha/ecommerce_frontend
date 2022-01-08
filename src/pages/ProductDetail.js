@@ -11,6 +11,7 @@ import {addToCart} from '../services/cartService';
 import ProductReviews from '../components/product/ProductReviews';
 
 import '../App.css'
+import {CONSTANTS} from '../constants';
 
 // maps the props to the reducer state.
 const mapStateToProps = (state) => {
@@ -30,8 +31,15 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
    const [product, setProduct] = useState({});
    const { id } = useParams();
    const dispatch = useDispatch();
+   const history = useHistory();
 
    const [someURL, setSomeURL] = useState('');
+
+
+   const gotoCart = ()=>
+   {
+   		history.push('/cart');
+   }
 
    const changeDisplayPreview = (e)=>
    {
@@ -67,7 +75,16 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
 
       else
       {
-          getProductDetails();
+          //();
+          data = await getSingleProduct(id);
+          
+          if(data.isError === false)
+      	  {
+      		setProduct(()=>data.product);
+      		setIsLoading((prev)=>false);
+          }
+
+          return;
       }
 
 
@@ -78,6 +95,9 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
 useEffect(()=>{
 
 		getProductDetails();
+
+
+		document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Product details`;
 
 }, []);
 
@@ -123,7 +143,7 @@ useEffect(()=>{
 				            		<div>Brand: Name</div>
 				            		<hr></hr>
 
-				            		<p><strong><span className="text-danger">R {product.Price} </span></strong>  </p>
+				            		<p><strong><span className="text-danger">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.Price)} </span></strong>  </p>
 
 				            		<p>
 				            			{product.Description}
@@ -132,7 +152,7 @@ useEffect(()=>{
 
 				            		<hr></hr>
 				            		<Button variant="primary" onClick={addToCartHandler} className="btn-pill primary-color col-md-7 col-12 text-nowrap mb-2"> Add to Cart</Button>{' '}
-				            		<Button variant="success" className="btn-pill col-md-4 text-white col-12  text-nowrap mb-2"> Shop now </Button>{' '}
+				            		<Button variant="success" className="btn-pill col-md-4 text-white col-12  text-nowrap mb-2" onClick={gotoCart}> Go to cart </Button>{' '}
 
 				            	</div>
 				         </div>

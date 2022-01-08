@@ -6,6 +6,8 @@ import {getSpecialProducts, getFeaturedProducts} from '../services/productServic
 import ProductItem from '../components/product/ProductItem';
 import '../App.css';
 
+import {CONSTANTS} from '../constants';
+
 function Home(props) {
 	     
    const [special, setSpecial] = useState([]);
@@ -58,6 +60,7 @@ const fetchProducts = async () => {
     useEffect(()=> {
         
        fetchProducts();
+       document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Home`;
 
        // fetch every: 30 seconds.
        const interval=setInterval(()=>{

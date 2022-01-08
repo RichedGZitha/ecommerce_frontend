@@ -11,6 +11,7 @@ export const CONSTANTS = {
 
  REGISTER_USER_URL :'/auth/v1/users/',
  RESET_PASSWORD_URL :'/auth/v1/users/reset_password/',
+ ECOM_WEBSITE_NAME : 'Fennel',
 
 
 		

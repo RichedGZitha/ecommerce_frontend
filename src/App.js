@@ -14,6 +14,8 @@ import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Newsletter from './components/Newsletter';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 import { Fragment, useState } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
@@ -38,6 +40,8 @@ function App() {
 				<Route path="/signup" component={Register}></Route>
 				<Route path="/reset-password" component={ResetPassword}></Route>
 				<Route path="/product/:id" component={ProductDetail}></Route>
+				<Route path="/cart" component={Cart} ></Route>
+				<Route path="/checkout" component={Checkout} ></Route>
 
 				<Route component={Error404}></Route>
 			</Switch>

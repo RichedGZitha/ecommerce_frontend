@@ -7,13 +7,14 @@ import { Link as link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import {password_reset} from '../services/authService';
 
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import {CONSTANTS} from '../constants';
 
 
 const ResetPassword = ()=>{
@@ -23,6 +24,11 @@ const ResetPassword = ()=>{
 
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+            document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Reset Password`;
+
+    }, []);
 
     // errors render list
     const showErrors = errors.map((error, index) =>

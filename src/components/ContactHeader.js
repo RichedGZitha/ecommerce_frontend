@@ -8,6 +8,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Link as link, useHistory } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -42,7 +44,7 @@ const ContactHeader = ()=> {
                     {/* The search bar nav */}
                     <Nav className="me-auto">
                         <Nav.Link href="mailto:email@email.com" className="d-none d-sm-block"> email@email.com</Nav.Link>
-                        <Nav.Link className="d-none d-sm-block"> +27 123 456 7890</Nav.Link>
+                        <Nav.Link className="d-xs-none d-md-block text-nowrap"> +27 123 456 7890</Nav.Link>
                     </Nav>
 
                     {/* right links */}
@@ -73,7 +75,7 @@ const ContactHeader = ()=> {
 
 
                         {/* Cart naviagtion */}
-                        <Nav.Link href="#" className="text-white">{cart.cartCount > 0?'Checkout':'Trolley'} <FontAwesomeIcon icon={faCartShopping} size="lg" /> <span className="badge rounded-pill primary-color">{cart.cartCount}</span></Nav.Link>
+                        <Nav.Link to="/cart" as={link} className="text-white">{cart.cartCount > 0?'Checkout':'Trolley'} <FontAwesomeIcon icon={faCartShopping} size="lg" /> <span className="badge rounded-pill primary-color">{cart.cartCount}</span></Nav.Link>
 
                     </Nav>
                 </Container>

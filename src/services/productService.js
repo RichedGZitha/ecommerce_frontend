@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosBase";
+import {header} from './header';
 
 
 async function getAllCategories(){
@@ -314,12 +315,12 @@ async function createProductReview(userID,productID, stars, review){
 
     let isError = false;
     let error_messages = [];
-    const result = undefined;
+    let result = undefined;
 
     const data = {'starsCount': stars, 'user': userID, 'product': productID, 'review': review};
     const url = "/products/create-review/";
             
-        await axiosInstance.post(url, data, )
+        await axiosInstance.post(url, data, {headers: header})
               .then(function (response) {
 
                 if(response.data){
@@ -374,12 +375,12 @@ async function createProductReview(userID,productID, stars, review){
 
     let isError = false;
     let error_messages = [];
-    const result = undefined;
+    let result = undefined;
 
     const data = {'starsCount': stars, 'review': review};
     const url = "/products/edit-product-review/" + reviewID + "/";
             
-        await axiosInstance.post(url, data, )
+        await axiosInstance.post(url, data, {headers: header})
               .then(function (response) {
 
                 if(response.data){

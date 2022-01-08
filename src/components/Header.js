@@ -18,6 +18,7 @@ import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
+import {CONSTANTS} from '../constants';
 
 // maps the props to the reducer state.
 const mapStateToProps = (state) => {
@@ -37,7 +38,6 @@ const Header = ({logo})=> {
 
    useEffect(()=> {
         
-       
          (async () => {
               const categories = await getAllCategories();
 
@@ -94,7 +94,7 @@ const logoutHandler = ()=>{
                         height="30"
                         className="d-inline-block align-top"
                         />{' '}
-                    Ecommerce Website
+                                {CONSTANTS.ECOM_WEBSITE_NAME}
                     </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

@@ -1,5 +1,6 @@
 import axiosBase from './axiosBase';
 import  { actionCreators } from '../state/actions/actionCreators';
+import {header} from './header';
 
 async function getUserInfo(dispatch)
 {
@@ -10,7 +11,7 @@ async function getUserInfo(dispatch)
 
     const url = "/get-my-profile/";
     
-    await axiosBase.get(url,)
+    await axiosBase.get(url, {headers:header})
     .then((response)=>{
 
         if(response.data)

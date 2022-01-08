@@ -4,10 +4,10 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 
 import { Link as link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import {login, refreshTokenRequest} from '../services/authService';
 import {getUserInfo} from '../services/userService';
@@ -15,6 +15,8 @@ import {getUserInfo} from '../services/userService';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+
+import {CONSTANTS} from '../constants';
 
 const getRefreshToken = (state) => state.loginReducer.refresh;
 	
@@ -25,8 +27,17 @@ const Signin = ()=>{
     const [isError, setIsError] = useState(false);
 	const refresh = useSelector(getRefreshToken);
 
+    const search = useLocation().search;
+    const next = new URLSearchParams(search).get('next');;
+
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+
+        document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Signin`;
+
+    }, []);
 
     // errors render list
     const showErrors = errors.map((error, index) =>
@@ -76,8 +87,7 @@ const Signin = ()=>{
             // if no request errors occured.
             if (loginResult.isError === false)
             {
-
-                const auth = await loginResult.auth;
+                
                 const updateUser = await getUserInfo(dispatch);
 
                 if(updateUser.isError === false)
@@ -95,7 +105,19 @@ const Signin = ()=>{
                         }
                     });
 
-                    history.push('/');
+
+
+                    // if next was not provided.
+                    if(next === undefined || next === null)
+                    {
+                       history.push('/');  
+                    }
+
+                    else
+                    {
+                        history.push(next);
+                    }
+                   
 
                 }
 
