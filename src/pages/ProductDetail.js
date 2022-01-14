@@ -1,4 +1,5 @@
 import { useParams, useHistory } from "react-router-dom";
+import ProductItem from "../components/product/ProductItem";
 
 import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs'
@@ -29,6 +30,7 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
    const user = useSelector(mapStateToProps);
    const [isLoading, setIsLoading] = useState(true);
    const [product, setProduct] = useState({});
+
    const { id } = useParams();
    const dispatch = useDispatch();
    const history = useHistory();
@@ -90,6 +92,12 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
 
    }
 
+const  renderSimilars = ()=>{
+
+  const items = product.similar.map((data,index)=><ProductItem product={data} key={index} className="col-3"/>);
+  return items;
+
+}
 
 // use effect
 useEffect(()=>{
@@ -99,7 +107,7 @@ useEffect(()=>{
 
 		document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Product details`;
 
-}, []);
+});
 
 
   return (
@@ -158,6 +166,9 @@ useEffect(()=>{
 				         </div>
 				    </div>
 
+
+
+
 			         :
 			         	<div className="col-md-6 offset-md-3 col-12">
 
@@ -169,6 +180,8 @@ useEffect(()=>{
 
 			         	</div>
 			     }
+
+
 
 			    {/* Revievs, questions and answers, specification   use tabs */}
 
@@ -189,17 +202,14 @@ useEffect(()=>{
 
 								   <Tab eventKey="Reviews" title="Reviews">
 								    		
+
 								    		<ProductReviews productIDProp={id} />
+								    	
 
 								  </Tab>
 							</Tabs>
 
-
-
-
-
 			         </div>
-
 
             	</div>
 

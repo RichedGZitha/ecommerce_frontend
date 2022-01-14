@@ -430,6 +430,66 @@ async function createProductReview(userID,productID, stars, review){
     }
 
 
+/// calculate the grandprice as per the database
+async function getGrandPrice(orders, discountcode = null){
+
+    let isError = false;
+    let error_messages = [];
+    let result = undefined;
+
+    const data =  discountcode === null || discountcode === undefined ? {'orders': orders}: {'orders': orders, 'discountcode':discountcode};
+
+    const url = "/transactions/calculate-purchase/";
+            
+        await axiosInstance.post(url, data, {headers: header})
+              .then(function (response) {
+
+                if(response.data){
+                   
+                    result = response.data;
+
+                }
+                
+              })
+              .catch(function (error) {
+
+                    if(error.response)
+                    {
+                        
+                        const data_ = error.response.data;
+                         
+                        if(data_ !== undefined)
+                        {
+                                error_messages = [...error_messages, data_['detail']];
+                        }
+                        
+                        
+                        // update the state.
+                        if(error_messages.length > 0)
+                        {
+                            isError = true;
+                        }
+
+                        else
+                        {
+                            error_messages = [...error_messages, 'Something went wrong.'];
+                            isError = true;
+                        }
+                    }
+
+                    // any other errors including network connection.
+                    else
+                    {
+                        error_messages = [...error_messages, 'Something went wrong. It might be your internet connection.'];
+                        isError = true;
+                    }
+                    
+              });
+
+
+              return {'isError': isError, 'errors': error_messages, 'data': result};
+    }
+
 
 
 export  {
@@ -439,6 +499,7 @@ export  {
     getSingleProduct,
     getProductReviews,
     createProductReview,
-    editProductReview
+    editProductReview,
+    getGrandPrice,
 
 };

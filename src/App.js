@@ -16,6 +16,7 @@ import ProductDetail from './pages/ProductDetail';
 import Newsletter from './components/Newsletter';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Payment from "./pages/Payment";
 
 import { Fragment, useState } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
@@ -42,6 +43,7 @@ function App() {
 				<Route path="/product/:id" component={ProductDetail}></Route>
 				<Route path="/cart" component={Cart} ></Route>
 				<Route path="/checkout" component={Checkout} ></Route>
+				<Route path="/payment" component={Payment}></Route>
 
 				<Route component={Error404}></Route>
 			</Switch>

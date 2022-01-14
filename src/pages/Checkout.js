@@ -1,6 +1,4 @@
 import React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,7 +89,7 @@ const Checkout =()=>{
 
         if(cart.isLoggedIn === false)
         {
-          history.push('/signin?next=' + encodeURIComponent('/Checkout'));
+          history.push('/signin?next=' + encodeURIComponent('/checkout'));
         }
 
         document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Checkout`;
@@ -130,35 +128,35 @@ const Checkout =()=>{
 
                           <div className="form-group">
 
-                              <label className="form-label" forHtml="firstname">Firstname</label>
+                              <label className="form-label" forhtml="firstname">Firstname</label>
                               <input type="text" className="form-control" id="firstname" name="firstname"  onChange={firstnameChangeHandler} required/>
 
                           </div>
 
                           <div className="form-group">
 
-                              <label className="form-label" forHtml="lastname">Lastname</label>
+                              <label className="form-label" forhtml="lastname">Lastname</label>
                               <input type="text" className="form-control" id="lastname" name="lastname"  onChange={lastnameChangeHandler} required/>
 
                           </div>
 
                           <div className="form-group">
 
-                              <label className="form-label" forHtml="email">Email</label>
+                              <label className="form-label" forhtml="email">Email</label>
                               <input type="email" className="form-control" id="email" name="email"  onChange={emailChangeHandler} required/>
 
                           </div>
 
                           <div className="form-group">
 
-                              <label className="form-label" forHtml="phone">Phone</label>
+                              <label className="form-label" forhtml="phone">Phone</label>
                               <input type="number" className="form-control" id="phone" name="phone"  onChange={phoneChangeHandler} required/>
 
                           </div>
 
                           <div className="form-group">
 
-                              <label className="form-label" forHtml="address">Address</label>
+                              <label className="form-label" forhtml="address">Address</label>
                               <input type="text" className="form-control" id="address" name="address"  onChange={addressChangeHandler} required/>
 
                           </div>

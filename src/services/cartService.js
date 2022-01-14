@@ -261,6 +261,30 @@ const updateSingleItem = (id, quantity, dispatch)=>{
 
 }
 
+// get orders
+const getOrders = () =>{
+
+    let cartJSON = localStorage.getItem(CONSTANTS.ECOM_CART);
+    
+    if(cartJSON !== null)
+    {
+        let cart = JSON.parse(cartJSON);
+        
+        let orders = [];
+
+     for( let i = 0; i < cart.length; i++) 
+     {
+        orders.push({'id': cart[i].id, 'quantity':cart[i].quantity});
+      }
+
+
+        return orders;
+    }
+
+    return [];
+
+}
+
 
 export  {
 	addToCart,
@@ -274,7 +298,8 @@ export  {
     getShippingCost,
     calculateTax,
     updateSingleItem,
-    removeAllCart
+    removeAllCart,
+    getOrders
 
 
 };
