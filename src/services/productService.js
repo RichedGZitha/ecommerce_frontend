@@ -17,7 +17,7 @@ async function getAllCategories(){
 
                 if(response.data){
                    
-                    categories = ['All', ...response.data.map((obj)=>obj.Name)];
+                    categories = ['All', ...response.data.map((obj)=>obj.name)];
                    
                 }
                 

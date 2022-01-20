@@ -1,7 +1,7 @@
 import {Types} from '../actions/actionTypes';
 
 
-const initState = {"search":"", "category":"Balls"};
+const initState = {"search":"", "category":"Laptop"};
 
 const searchReducer = (state = initState, action) => {
 	
