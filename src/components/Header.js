@@ -48,6 +48,7 @@ const Header = ({logo})=> {
               if(categories_.isError === false)
               {
 
+                console.log(categories_);
                 setCategories((prev)=>{
 
                     return categories_.categories;
@@ -82,9 +83,16 @@ const logoutHandler = ()=>{
 
    }
 
+   // handle category changes.
    const categoryChange = (e)=>{
             
             updateSearch({"serach": data.search.search, "category": e.target.value}, dispatch);
+   }
+
+   // handle changes to the search bar
+   const searchChange = (e)=>{
+            
+            updateSearch({"serach": e.target.value, "category": data.search.category}, dispatch);
    }
 
   return (
@@ -115,7 +123,7 @@ const logoutHandler = ()=>{
 
                     <Form className="d-flex mt-2">
 
-                        <select className="categoryDropdown">
+                        <select className="categoryDropdown" value={data.search.category} onChange={categoryChange}>
 
 
                             {categories.map((category, index) =>(
@@ -130,6 +138,9 @@ const logoutHandler = ()=>{
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
+                        onChange={searchChange}
+                        value={data.search.search}
+                        
                         className = "rounded-0"
                         />
                         <Button variant="outline-success" className="searchButton primary-color">Search</Button>

@@ -4,6 +4,7 @@ import {actionCreators} from "../state/actions/actionCreators";
 const updateSearch = (search, dispach)=>{
 
 	dispach(actionCreators.updateSearchBarActionCreator(search));
+
 }
 
 
