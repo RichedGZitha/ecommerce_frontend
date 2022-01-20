@@ -54,6 +54,15 @@ const updateCartActionCreator = (cart)=>{
 }
 
 
+// update the search bar
+const updateSearchBarActionCreator = (search)=>
+{
+	return {
+		type:Types.UPDATE_SEARCH, search
+	};
+}
+
+
 
 export const actionCreators = {logoutActionCreator, 
-	loginActionCreator, updateUserActionCreator, updateProfileActionCreator, updateCartActionCreator};
+	loginActionCreator, updateUserActionCreator, updateProfileActionCreator, updateCartActionCreator, updateSearchBarActionCreator};

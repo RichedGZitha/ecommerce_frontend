@@ -7,6 +7,12 @@ import { Link as link, useHistory, useLocation } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+
+
 import { getCartCountStore, 
          removeFromCart, 
          getAllCartProducts, 
@@ -28,6 +34,7 @@ const mapStateToProps = (state) => {
       cart: state.cartReducer,
       cartCount: getCartCountStore(state.cartReducer),
       isLoggedIn: state.loginReducer.isAuthenticated,
+      user: state.userReducer
     }
   }
 
@@ -40,17 +47,57 @@ const Checkout =()=>{
     const history = useHistory();
     const location = useLocation();
 
-    const [address, setAddress] = useState('');
+    const [street_name, setStreetname] = useState('');
+    const [suburb, setSuburb] = useState('');
+    const [city, setCity] = useState('');
+    const [province, setProvince] = useState('');
+    const [postal_code, setPostalcode] = useState('');
+    const [country, setCountry] = useState('');
+
+
     const [phone, setPhone] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState();
-    const [email, setEmail] = useState('');
+    const [firstname, setFirstname] = useState(cart.user.first_name);
+    const [lastname, setLastname] = useState(cart.user.last_name);
+    const [email, setEmail] = useState(cart.user.email);
 
-    const addressChangeHandler = (e)=>{
 
-      setAddress(()=>e.target.value);
+    const streetnameChangeHandler = (e)=>{
+
+      setStreetname(()=>e.target.value);
 
     }
+
+    const suburbChangeHandler = (e)=>{
+
+      setSuburb(()=>e.target.value);
+
+    }
+
+    const cityChangeHandler = (e)=>{
+
+      setCity(()=>e.target.value);
+
+    }
+
+    const provinceChangeHandler = (e)=>{
+
+      setProvince(()=>e.target.value);
+
+    }
+
+
+    const postalcodeChangeHandler = (e)=>{
+
+      setPostalcode(()=>e.target.value);
+
+    }
+
+    const countryChangeHandler = (e)=>{
+
+      setCountry(()=>e.target.value);
+
+    }
+
 
 
     const emailChangeHandler = (e)=>{
@@ -97,12 +144,21 @@ const Checkout =()=>{
        }, []);
 
 
-    const billingSumbitHandler = (e)=>{
+    const shippingSumbitHandler = (e)=>{
         e.preventDefault();
 
         if(cart.isLoggedIn === true)
         {
-          history.push('/payment');
+
+            // save information to cart.
+           
+            const shipping = {'firstname':firstname, 'lastname':lastname, 'email':email, 
+            'phone':phone, 'street_name':street_name, 
+            'country':country, 'postal_code':postal_code, 'province':province, 'city':city, 'suburb':suburb};
+            
+            localStorage.setItem(CONSTANTS.ECOM_USER_SHIPPING, JSON.stringify(shipping));
+            
+            history.push('/payment');
         }
 
         else
@@ -123,41 +179,105 @@ const Checkout =()=>{
               <div className="row mt-4">
                     <div className="col-md-6 col-xl-7 col-12 mt-xs-4 mt-sm-4 mt-md-0">
 
-                      <p className="fs-4">Fill in Billing Information</p>
-                      <form method="post" onSubmit={billingSumbitHandler} className="mt-4">
+                      <p className="fs-4">Fill in Shipping Information</p>
+                      <form method="post" onSubmit={shippingSumbitHandler} className="mt-4">
 
-                          <div className="form-group">
+                          <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="firstname">Firstname</label>
-                              <input type="text" className="form-control" id="firstname" name="firstname"  onChange={firstnameChangeHandler} required/>
+                              <input type="text" className="form-control" id="firstname" name="firstname" value={firstname} onChange={firstnameChangeHandler} required/>
 
                           </div>
 
-                          <div className="form-group">
+                          <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="lastname">Lastname</label>
-                              <input type="text" className="form-control" id="lastname" name="lastname"  onChange={lastnameChangeHandler} required/>
+                              <input type="text" className="form-control" id="lastname" name="lastname"  value={lastname} onChange={lastnameChangeHandler} required/>
 
                           </div>
 
-                          <div className="form-group">
+                          <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="email">Email</label>
-                              <input type="email" className="form-control" id="email" name="email"  onChange={emailChangeHandler} required/>
+                              <input type="email" className="form-control" id="email" name="email" value={email} onChange={emailChangeHandler} required/>
 
                           </div>
 
-                          <div className="form-group">
+                          <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="phone">Phone</label>
-                              <input type="number" className="form-control" id="phone" name="phone"  onChange={phoneChangeHandler} required/>
+                              
+                              
+                              <PhoneInput
+                                      placeholder="Enter phone number"
+                                      value={ phone }
+                                      international
+                                      defaultCountry="ZA"
+                                      required
+                                      name="phone"
+                                      className="form-control"
+                                    onChange={setPhone} />
 
                           </div>
 
-                          <div className="form-group">
+                          <div className="form-group mt-2">
 
-                              <label className="form-label" forhtml="address">Address</label>
-                              <input type="text" className="form-control" id="address" name="address"  onChange={addressChangeHandler} required/>
+                              <label className="form-label" forhtml="street_name">Street name & number </label>
+                              <input type="text" className="form-control" id="street_name" name="street_name"  onChange={streetnameChangeHandler} required />
+
+                          </div>
+
+                           <div className="form-group mt-2">
+
+                              <label className="form-label" forhtml="suburb">Suburb (Optional)</label>
+                              <input type="text" className="form-control" id="suburb" name="suburb"  onChange={suburbChangeHandler}/>
+
+                          </div>
+
+                          <div className="form-group mt-2">
+
+                              <label className="form-label" forhtml="city">City</label>
+                              <input type="text" className="form-control" id="city" name="city"  onChange={cityChangeHandler} required/>
+
+                          </div>
+
+
+                          <div className="form-group mt-2">
+
+                              <label className="form-label" forhtml="province">Country and Province/Region</label> <br/>
+                            
+                            <div className="row">
+
+                              <div className="col-12 col-md-8 mb-2 mb-md-0">
+                                <CountryDropdown
+                                  value={country}
+                                  onChange={(val) => setCountry(val)} 
+                                    required
+                                    className="form-select"
+                                  />
+
+                                </div>
+
+                              <div className="col-12 col-md-4">
+
+                                  <RegionDropdown
+                                    country={country}
+                                    value={province}
+                                    onChange={(val) => setProvince(val)} 
+                                    className="form-select"
+                                    required
+                                    />
+                              </div>
+
+                              </div>
+                                
+                          </div>
+
+
+                          <div className="form-group mt-2">
+
+                              <label className="form-label" forhtml="postal_code">Postal Code</label>
+                              <input type="text" className="form-control" id="postal_code" name="postal_code"  onChange={postalcodeChangeHandler} required/>
 
                           </div>
 

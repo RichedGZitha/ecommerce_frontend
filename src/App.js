@@ -4,7 +4,6 @@ import './App.css';
 // replace with cdn version instead.
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import JustAComponent from './components/JustAComponent';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Error404 from './pages/Error404';

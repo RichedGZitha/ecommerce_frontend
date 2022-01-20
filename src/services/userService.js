@@ -19,8 +19,8 @@ async function getUserInfo(dispatch)
             data = response.data;
             let user = data.user
 
-            let profile_dict = {'id':user.id, 'Country':data.Country, 'Contact':data.Contact, 'loyaltyPoints':data.loyaltyPoints, 'HeaderImage':data.HeaderImage, 'Avatar':data.Avatar}
-            let user_dict = {'id': user.id, 'username': user.username, 'first_name': user.first_name, 'email':user.email, 'last_name': user.last_name, 'isManager': data.isManager, 'isSeller': data.isSeller};
+            let profile_dict = {'id':user.id, 'Country':data.country, 'Contact':data.contact, 'loyaltyPoints':data.loyalty_points, 'HeaderImage':data.header_image, 'Avatar':data.avatar}
+            let user_dict = {'id': user.id, 'username': user.username, 'first_name': user.first_name, 'email':user.email, 'last_name': user.last_name, 'isManager': data.is_manager, 'is_seller': data.is_seller};
             
 
             // update the user store.

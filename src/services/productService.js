@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosBase";
 import {header} from './header';
+import {CONSTANTS} from "../constants";
 
 
 async function getAllCategories(){
@@ -317,7 +318,7 @@ async function createProductReview(userID,productID, stars, review){
     let error_messages = [];
     let result = undefined;
 
-    const data = {'starsCount': stars, 'user': userID, 'product': productID, 'review': review};
+    const data = {'stars_count': stars, 'user': userID, 'product': productID, 'review': review};
     const url = "/products/create-review/";
             
         await axiosInstance.post(url, data, {headers: header})
@@ -377,7 +378,7 @@ async function createProductReview(userID,productID, stars, review){
     let error_messages = [];
     let result = undefined;
 
-    const data = {'starsCount': stars, 'review': review};
+    const data = {'stars_count': stars, 'review': review};
     const url = "/products/edit-product-review/" + reviewID + "/";
             
         await axiosInstance.post(url, data, {headers: header})
@@ -491,6 +492,138 @@ async function getGrandPrice(orders, discountcode = null){
     }
 
 
+    /// make a transaction.
+async function makeTransaction(orders, discountcode = null){
+
+    let isError = false;
+    let error_messages = [];
+    let result = undefined;
+
+    const data =  discountcode === null || discountcode === undefined ? {'orders': orders}: {'orders': orders, 'coupon':discountcode};
+
+    const url = "/transactions/make-transaction/";
+            
+        await axiosInstance.post(url, data, {headers: header})
+              .then(function (response) {
+
+                if(response.data){
+                   
+                    result = response.data;
+
+                }
+                
+              })
+              .catch(function (error) {
+
+                    if(error.response)
+                    {
+                        
+                        const data_ = error.response.data;
+                         
+                        if(data_ !== undefined)
+                        {
+                                error_messages = [...error_messages, data_['detail']];
+                        }
+                        
+                        
+                        // update the state.
+                        if(error_messages.length > 0)
+                        {
+                            isError = true;
+                        }
+
+                        else
+                        {
+                            error_messages = [...error_messages, 'Something went wrong.'];
+                            isError = true;
+                        }
+                    }
+
+                    // any other errors including network connection.
+                    else
+                    {
+                        error_messages = [...error_messages, 'Something went wrong. It might be your internet connection.'];
+                        isError = true;
+                    }
+                    
+              });
+
+
+              return {'isError': isError, 'errors': error_messages, 'data': result};
+    }
+
+
+
+/// create a shipment for user.
+async function createShipment(invoive_id){
+
+    let isError = false;
+    let error_messages = [];
+    let result = undefined;
+
+    let shippingJSON = localStorage.getItem(CONSTANTS.ECOM_USER_SHIPPING);
+
+    if(shippingJSON === null || shippingJSON === undefined)
+    {
+        return {'isError':true, 'data':undefined, 'errors': ["No shipping information provided."]};
+    }
+
+    let shipping = JSON.parse(shippingJSON);
+
+    const url = `/transactions/create-shipment/${invoive_id}/`;
+            
+        await axiosInstance.post(url, shipping, {headers: header})
+              .then(function (response) {
+
+                if(response.data){
+                    result = response.data;
+
+                    // remove the shipping information.
+                    localStorage.removeItem(CONSTANTS.ECOM_USER_SHIPPING);
+                }
+                
+              })
+              .catch(function (error) {
+
+                    if(error.response)
+                    {
+                        
+                        const data_ = error.response.data;
+                         
+                        if(data_ !== undefined)
+                        {
+                                error_messages = [...error_messages, data_['detail']];
+                        }
+                        
+                        
+                        // update the state.
+                        if(error_messages.length > 0)
+                        {
+                            isError = true;
+                        }
+
+                        else
+                        {
+                            error_messages = [...error_messages, 'Something went wrong.'];
+                            isError = true;
+                        }
+                    }
+
+                    // any other errors including network connection.
+                    else
+                    {
+                        error_messages = [...error_messages, 'Something went wrong. It might be your internet connection.'];
+                        isError = true;
+                    }
+                    
+              });
+
+
+              return {'isError': isError, 'errors': error_messages, 'data': result};
+    }
+
+
+
 
 export  {
 	getAllCategories,
@@ -501,5 +634,7 @@ export  {
     createProductReview,
     editProductReview,
     getGrandPrice,
+    makeTransaction,
+    createShipment
 
 };

@@ -9,7 +9,7 @@ import {
 } from "@paypal/react-paypal-js";
 
 import {getOrders, removeAllCart} from "../services/cartService";
-import {getGrandPrice} from "../services/productService";
+import {getGrandPrice, makeTransaction, createShipment} from "../services/productService";
 
 import {CONSTANTS} from '../constants';
 
@@ -21,6 +21,7 @@ require('dotenv').config();
 
 // This values are the props in the UI
 const currency = "USD";
+
 const style = {"layout":"vertical"};
 
 
@@ -52,19 +53,17 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
 
     		(async ()=> {
     			
-    			const GrandPrice = await getGrandPrice(getOrders());
+    			let GrandPrice = await getGrandPrice(getOrders());
 
     			if(GrandPrice.isError === false)
     			{
-    				console.log(GrandPrice.data);
-    				setAmount(()=>new String(GrandPrice.data.grandprice));
-    				console.log(process.env.PAYPAL_CLIENT_ID);
+    				setAmount(()=>"" + GrandPrice.data.grandtotal + "");
     			}
 
     			else
     			{
-    				//window.alert(getOrders().length);
-    				//window.alert("error");
+    				GrandPrice = await getGrandPrice(getOrders());
+    				setAmount(()=>"" + GrandPrice.data.grandtotal + "");
     			}
 
     		}
@@ -112,20 +111,79 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
                     return actions.order.capture().then(function () {
                         // Your code here after capture the order
 
-                        removeAllCart(dispatchCustom);
+                        (async ()=>
+                        {
+                        	// create invoice
+	                        let transaction = await makeTransaction(getOrders());
 
-                          // show notification.
-                        store.addNotification({
-                        title: 'Payment Successful',
-                        message: 'Your payment was successful. Navigate to My Account -> View Order History to get the order number.',
-                        type: 'success',                         // 'default', 'success', 'info', 'warning'
-                        container: 'top-left',                // where to position the notifications
-                        animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
-                        animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
-                        dismiss: {
-                          duration: 0
-                        }
-                    });
+	                        // create shipment
+	                        if(transaction.isError===false)
+	                        {
+
+	                        	let shipmentResult = await createShipment(transaction.data.invoice);
+
+	                        	if( shipmentResult.isError === false)
+	                        	{
+				                        // clear the cart.
+				                        removeAllCart(dispatchCustom);
+
+				                        // show notification.
+				                        store.addNotification({
+				                        title: 'Payment Successful',
+				                        message: `Order number is ${shipmentResult.data.shipment_code}. Navigate to My Account -> View Order History to get the order number.`,
+				                        type: 'success',                         // 'default', 'success', 'info', 'warning'
+				                        container: 'top-left',                // where to position the notifications
+				                        animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+				                        animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+				                        dismiss: {
+				                          duration: 0
+				                        }
+				                    });
+
+				                    history.push("/");
+
+			                    }
+
+			                 }
+
+
+			                 else
+			                 {
+			                 		transaction = await makeTransaction(getOrders());
+
+			                        // create shipment
+			                        if(transaction.isError===false)
+			                        {
+
+			                        	let shipmentResult = await createShipment(transaction.data.invoice);
+
+			                        	if( shipmentResult.isError === false)
+			                        	{
+						                        // clear the cart.
+						                        removeAllCart(dispatchCustom);
+
+						                        // show notification.
+						                        store.addNotification({
+						                        title: 'Payment Successful',
+						                        message: `Order number is ${shipmentResult.data.shipment_code}. Navigate to My Account -> View Order History to get the order number.`,
+						                        type: 'success',                         // 'default', 'success', 'info', 'warning'
+						                        container: 'top-left',                // where to position the notifications
+						                        animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+						                        animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+						                        dismiss: {
+						                          duration: 0
+						                        }
+						                    });
+
+						                     history.push("/");
+
+					                    }
+					                }
+
+			                 }
+
+                    })();
+
                     });
                 }}
             />
@@ -134,19 +192,26 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
 }
 
 export default function Payment() {
+
+	const [client_id, setClientId] = useState(process.env.REACT_APP_PAYPAL_CLIENT_ID);
+
+
+	const getOptions = ()=>{
+		return {
+                    "client-id": client_id,
+                    components: "buttons",
+                    currency: "USD"
+                };
+	}
+	
 	return (
 	<div className="container">
-	  <div className="row mt-4">
 
-	  
+	  <div className="row mt-4">
 
 		<div style={{ maxWidth: "750px", minHeight: "200px" }} className="col-12 col-md-6 offset-md-3">
             <PayPalScriptProvider
-                options={{
-                    "client-id": "test",
-                    components: "buttons",
-                    currency: "USD"
-                }}
+                options = {getOptions()}
             >
 
             	<h1> Payment Information </h1>

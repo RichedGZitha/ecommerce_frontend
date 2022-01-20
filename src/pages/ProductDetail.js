@@ -54,9 +54,9 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
    const addToCartHandler = ()=>{
 
       const id = product.id;
-      const unitprice = product.Price;
-      const name = product.Name;
-      const img_url = product.FrontImage;
+      const unitprice = product.price;
+      const name = product.name;
+      const img_url = product.front_image;
 
       // add to the cart.
       addToCart(id, name, unitprice, img_url,1, dispatch);
@@ -75,21 +75,6 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
       		setIsLoading((prev)=>false);
       }
 
-      else
-      {
-          //();
-          data = await getSingleProduct(id);
-          
-          if(data.isError === false)
-      	  {
-      		setProduct(()=>data.product);
-      		setIsLoading((prev)=>false);
-          }
-
-          return;
-      }
-
-
    }
 
 const  renderSimilars = ()=>{
@@ -107,7 +92,7 @@ useEffect(()=>{
 
 		document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Product details`;
 
-});
+}, []);
 
 
   return (
@@ -128,15 +113,15 @@ useEffect(()=>{
 
 				            		<div className="row">
 				            			<div className="col-12">
-				            				<img src={product.FrontImage} alt="FrontImage"  className="img rounded img-fluid product-image" id="preview" />
+				            				<img src={product.front_image} alt="FrontImage"  className="img rounded img-fluid product-image" id="preview" />
 				            			</div>
 				            		</div>
 
 				            		<div className="row mt-4 mb-4">
 				            			<div className="col-12">
 
-				            				<img src={product.FrontImage} alt="FrontImage"  className="img img-thumbnail" onClick={changeDisplayPreview} height="50" width="50"/>
-				            				<img src={product.RearImage} alt="RearImage"  className="img img-thumbnail ms-2" onClick={changeDisplayPreview}   height="50"  width="50"/>
+				            				<img src={product.front_image} alt="FrontImage"  className="img img-thumbnail" onClick={changeDisplayPreview} height="50" width="50"/>
+				            				<img src={product.rear_image} alt="RearImage"  className="img img-thumbnail ms-2" onClick={changeDisplayPreview}   height="50"  width="50"/>
 
 				            			</div>
 				            		</div>
@@ -147,14 +132,14 @@ useEffect(()=>{
 				                {/* Description section */}
 				            	<div className="col-md-7 col-12">
 
-				            		<h4> {product.Name}</h4>
+				            		<h4> {product.name}</h4>
 				            		<div>Brand: Name</div>
 				            		<hr></hr>
 
-				            		<p><strong><span className="text-danger">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.Price)} </span></strong>  </p>
+				            		<p><strong><span className="text-danger">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)} </span></strong>  </p>
 
 				            		<p>
-				            			{product.Description}
+				            			{product.description}
 				            		</p>
 
 

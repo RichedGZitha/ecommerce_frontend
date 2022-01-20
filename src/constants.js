@@ -3,6 +3,7 @@ export const CONSTANTS = {
  ECOM_USER_AUTH : 'ecom_user_auth',
  ECOM_USER: 'ecom_user',
  ECOM_CART:'ecom_cart',
+ ECOM_USER_SHIPPING:'ecom_user_shipping',
 
  BASE_URL :'localhost:8000',
  
@@ -12,6 +13,8 @@ export const CONSTANTS = {
  REGISTER_USER_URL :'/auth/v1/users/',
  RESET_PASSWORD_URL :'/auth/v1/users/reset_password/',
  ECOM_WEBSITE_NAME : 'Fennel',
+
+ 
 
 
 		

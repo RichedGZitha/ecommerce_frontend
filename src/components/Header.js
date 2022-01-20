@@ -12,6 +12,7 @@ import { Link as link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
 import {logout} from '../services/authService';
+import {updateSearch} from "../services/searchService";
 import {getAllCategories} from '../services/productService';
 
 import { store } from 'react-notifications-component';
@@ -25,29 +26,33 @@ const mapStateToProps = (state) => {
 		
 		return {
 			login: state.loginReducer,
+            search: state.searchReducer,
 		}
 	}
 
 const Header = ({logo})=> {
 	
-  const data = useSelector(mapStateToProps);
+   const data = useSelector(mapStateToProps);
    const [categories, setCategories] = useState(['All','Electronics', 'Camping', 'Tools', 'Kitchen']);
    const [notifsCount, setNotifsCount] = useState(0);
    const dispatch = useDispatch();
    const history = useHistory();
+   
+   const [searchSelected, setSearchSelected] = useState("");
 
    useEffect(()=> {
         
          (async () => {
-              const categories = await getAllCategories();
+              const categories_ = await getAllCategories();
 
-              if(categories.isError !== true)
+              if(categories_.isError === false)
               {
+
+                console.log(categories_.categories.length());
                 setCategories((prev)=>{
 
-
-                    return categories.categories;
-                })
+                    return categories_.categories;
+                });
 
               }
             })();
@@ -77,7 +82,12 @@ const logoutHandler = ()=>{
         history.push('/signin');
 
    }
-   
+
+   const categoryChange = (e)=>{
+            
+            updateSearch({"serach": data.search.search, "category": e.target.value}, dispatch);
+   }
+
   return (
 
         <div>
@@ -108,10 +118,11 @@ const logoutHandler = ()=>{
 
                         <select className="categoryDropdown">
 
+
                             {categories.map((category, index) =>(
-                            <option key={index} value={category} variant="secondary">
-                                {category}
-                            </option>
+                                <option key={index} value={category} variant="secondary">
+                                    {category}
+                                </option>
                             ))}
 
                         </select>

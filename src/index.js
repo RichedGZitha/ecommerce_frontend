@@ -6,6 +6,11 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './state/reducers/rootReducer';
 
+const dotenv = require('dotenv')
+dotenv.config()
+
+
+
 
 const store = createStore(rootReducer)
 

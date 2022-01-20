@@ -23,6 +23,7 @@ const mapStateToProps = (state) => {
     return {
       cart: state.cartReducer,
       cartCount: getCartCountStore(state.cartReducer),
+      search:state.searchReducer
     }
   }
 
@@ -44,14 +45,13 @@ const ContactHeader = ()=> {
                     {/* The search bar nav */}
                     <Nav className="me-auto">
                         <Nav.Link href="mailto:email@email.com" className="d-none d-sm-block"> email@email.com</Nav.Link>
-                        <Nav.Link className="d-xs-none d-md-block text-nowrap"> +27 123 456 7890</Nav.Link>
                     </Nav>
 
                     {/* right links */}
                     <Nav className="mr-auto">
 
                         {/* Language dropdown */}
-                        <NavDropdown title="Lang" id="collasible-nav-dropdown">
+                        <NavDropdown title="Language" id="collasible-nav-dropdown">
                             
                             {
                                 languages.map((language, index) =>(

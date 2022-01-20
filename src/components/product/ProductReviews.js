@@ -322,8 +322,8 @@ function ProductReviews({ productIDProp = -1}) {
                                     </div>
 
                                     <div className="col-8">
-                                      <p> Posted {getFormatedDate(rev.created)}  {rev.isEdited === true && <strong>| Edited</strong>}</p>
-                                      <p> <span className={getColorClass(rev.starsCount)}>  {rev.starsCount}  out of 5 Stars </span> </p>
+                                      <p> Posted {getFormatedDate(rev.created)}  {rev.is_edited === true && <strong>| Edited</strong>}</p>
+                                      <p> <span className={getColorClass(rev.stars_count)}>  {rev.stars_count}  out of 5 Stars </span> </p>
                                     </div>
 
                                 </div>
@@ -463,7 +463,7 @@ function ProductReviews({ productIDProp = -1}) {
 
             {/* start of comments section*/}
               <div className="col-12 col-md-8">
-                <h4 className="section-title"> Reviews comments here </h4>
+                <h4 className="section-title"> Reviews comments </h4>
 
                 {pastReviews.length > 0 && 
                   <div>

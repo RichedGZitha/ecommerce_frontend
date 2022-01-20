@@ -16,9 +16,9 @@ function ProductItem({product, isSpecial = false, isFeatured = false, membership
    const addToCartHandler = ()=>{
 
       const id = product.id;
-      const unitprice = product.Price;
-      const name = product.Name;
-      const img_url = product.FrontImage;
+      const unitprice = product.price;
+      const name = product.name;
+      const img_url = product.front_image;
 
       // add to the cart.
       addToCart(id, name, unitprice, img_url, 1, dispath);
@@ -39,20 +39,20 @@ function ProductItem({product, isSpecial = false, isFeatured = false, membership
 
       <div className="card rounded-0">
 
-        <img src={product.FrontImage} className="img-fluid" alt="Image"  onClick={gotoProductDetails}/>
+        <img src={product.front_image} className="img-fluid" alt="Image"  onClick={gotoProductDetails}/>
         <div className="card-body">
             {isFeatured === true ?<span className="badge rounded-pill bg-success">Featured</span>:''}
             {isSpecial === true ?<span className="badge rounded-pill bg-danger">On Special</span>:''}
             {membership === true ?<span className="badge rounded-pill bg-primary text-wrap">Membership Discount</span>:''}
 
-            <h5 className="card-title text-wrap text-link" onClick={gotoProductDetails}>{product.Name}  
+            <h5 className="card-title text-wrap text-link" onClick={gotoProductDetails}>{product.name}  
             </h5>
 
 
             {isSpecial
             ? 
-              <p><span className="text-decoration-line-through small">R {product.Price}</span> <span className="text-danger text-nowrap">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.Price)}</span></p>
-            : <p className="text-danger">R {product.Price}</p>}
+              <p><span className="text-decoration-line-through small">R {product.Price}</span> <span className="text-danger text-nowrap">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</span></p>
+            : <p className="text-danger">R {new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</p>}
 
 
           {/* TODO: render avarage star count out of 5 */}
