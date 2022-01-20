@@ -48,7 +48,6 @@ const Header = ({logo})=> {
               if(categories_.isError === false)
               {
 
-                console.log(categories_.categories.length());
                 setCategories((prev)=>{
 
                     return categories_.categories;
