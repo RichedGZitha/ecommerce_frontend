@@ -1,15 +1,18 @@
-import { useParams, useHistory } from "react-router-dom";
+import { Link as link, useHistory, useLocation, useParams } from 'react-router-dom';
 import ProductItem from "../components/product/ProductItem";
 
 import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 
+import Alert from 'react-bootstrap/Alert';
+
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import {getSingleProduct} from '../services/productService';
 import {addToCart} from '../services/cartService';
 import ProductReviews from '../components/product/ProductReviews';
+import Stars from "../components/Stars"; 
 
 import '../App.css'
 import {CONSTANTS} from '../constants';
@@ -84,13 +87,22 @@ const  renderSimilars = ()=>{
 
 }
 
+// handle the email submission
+const handleEmailSubmit =(e)=>
+{
+	e.preventDefault();
+
+	// submit an amail
+	console.log(e.target.email.value);
+}
+
 // use effect
 useEffect(()=>{
 
 		getProductDetails();
 
 
-		document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Product details`;
+		document.title = `Product details - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
 }, []);
 
@@ -133,8 +145,11 @@ useEffect(()=>{
 				            	<div className="col-md-7 col-12">
 
 				            		<h4> {product.name}</h4>
-				            		<div>Brand: Name</div>
-				            		<hr></hr>
+				            		<div>Sold by:  <Alert.Link to={"/shop" + "?brand="+ "name" } as={link}> Name </Alert.Link></div>
+				            		<Stars stars_count={product.average_stars} no_text={true} />
+				            		<hr/>
+
+
 
 				            		<p><strong><span className="text-danger">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)} </span></strong>  </p>
 
@@ -143,9 +158,37 @@ useEffect(()=>{
 				            		</p>
 
 
-				            		<hr></hr>
-				            		<Button variant="primary" onClick={addToCartHandler} className="btn-pill primary-color col-md-7 col-12 text-nowrap mb-2"> Add to Cart</Button>{' '}
-				            		<Button variant="success" className="btn-pill col-md-4 text-white col-12  text-nowrap mb-2" onClick={gotoCart}> Go to cart </Button>{' '}
+				            		<hr/>
+
+				            		{product.in_stock === true ?
+				            		
+				            			<Button variant="primary" onClick={addToCartHandler} className="btn-pill primary-color col-md-7 col-12 text-nowrap mb-2"> Add to Cart <span className="material-icons align-middle">shopping_cart</span></Button>
+				            		:
+				            			<div className="row">
+
+				            					<h5> Product is out of stock </h5>
+				            					<p> Please kindly provide your <strong>Email address </strong> below to get a notification when product is available.</p>
+				            					<form method="post" onSubmit={handleEmailSubmit}>
+
+				            						<div className="form-group">
+				            							<input type="email" name="email" id="email" className="form-control rounded-pill" placeholder="email@email.com"/>
+				            						</div>
+				            						
+				            						<div className="form-group mt-2 mb-4">
+				            							<button type="submit" className="btn btn-pill primary-color text-white form-control">Submit </button>
+				            						</div>
+				            						
+				            						
+				            						
+				            					</form>
+
+				            					<hr/>
+
+				            			</div>
+
+				            		}
+
+				            		<Button variant="success" className="btn-pill col-md-4 text-white col-12  text-nowrap mb-2" onClick={gotoCart}> Go to cart  <span className="material-icons align-middle">chevron_right</span></Button>{' '}
 
 				            	</div>
 				         </div>
@@ -188,7 +231,7 @@ useEffect(()=>{
 								   <Tab eventKey="Reviews" title="Reviews">
 								    		
 
-								    		<ProductReviews productIDProp={id} />
+								    		<ProductReviews productIDProp={id} product={product} />
 								    	
 
 								  </Tab>

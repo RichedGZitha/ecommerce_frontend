@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react";
 import {getProductReviews, createProductReview, editProductReview} from '../../services/productService';
 import '../../App.css';
+import Stars from "../Stars";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +33,7 @@ const mapStateToProps = (state) => {
     }
   }
 
-function ProductReviews({ productIDProp = -1}) {
+function ProductReviews({ productIDProp = -1, product}) {
 	   
    const [pastReviews, setPastReviews] = useState([]); 
 
@@ -247,32 +248,6 @@ function ProductReviews({ productIDProp = -1}) {
    }, []);
 
 
-   // chooses the correct color of the button based on category
-   // 1 - 2 stars rating - red color
-   // 3 - has yellow color
-   // 4 - 5 has blue color. 
-   const getColorClass = (count)=>{
-      let color = "";
-
-      if (count < 3)
-      {
-        color = "bg-danger";
-      }
-
-      else if(count === 3)
-      {
-        color = "bg-primary";
-      }
-
-      else
-      {
-        color = "bg-success";
-      }
-
-      return `badge ${color} p-2 col-12 col-md-6`;
-   }
-
-   
    // format date to human readable one.
    const getFormatedDate = (date)=>{
 
@@ -280,30 +255,10 @@ function ProductReviews({ productIDProp = -1}) {
 
    }
 
-
-   // calculate the number of stars.
-   const getAvarageStars = (reviews)=>{
-
-      let avg = 0.0;
-      let sumOfStars = 0;
-
-      for(let i =0; i < reviews.length; i++)
-      {
-          sumOfStars += reviews[i].starsCount;
-
-      }
-
-      avg = sumOfStars / reviews.length;
-
-      return avg;
-   } 
-
-   // edit your own review
+   /** edit your own review
    const editReview = ()=>{
-        //setEditMyReview(()=>review_id);
-        console.log(editMyReviewID);
-
-   }
+        setEditMyReviewID(()=>review_id);
+   }*/
 
    // renders list of comments
    const renderComments = ()=>
@@ -323,7 +278,7 @@ function ProductReviews({ productIDProp = -1}) {
 
                                     <div className="col-8">
                                       <p> Posted {getFormatedDate(rev.created)}  {rev.is_edited === true && <strong>| Edited</strong>}</p>
-                                      <p> <span className={getColorClass(rev.stars_count)}>  {rev.stars_count}  out of 5 Stars </span> </p>
+                                      <Stars stars_count={rev.stars_count} no_text={true} />
                                     </div>
 
                                 </div>
@@ -467,7 +422,7 @@ function ProductReviews({ productIDProp = -1}) {
 
                 {pastReviews.length > 0 && 
                   <div>
-                     <h6> Average of {getAvarageStars(pastReviews)} / 5 stars </h6>
+                     <h6> Average of {product.average_stars} out of 5 stars </h6>
                      <hr/>
 
                      {renderComments()}

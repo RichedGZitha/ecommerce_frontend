@@ -20,6 +20,7 @@ import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
 import {CONSTANTS} from '../constants';
+import {getProductsByCustomParams} from "../services/productService";
 
 // maps the props to the reducer state.
 const mapStateToProps = (state) => {
@@ -39,6 +40,7 @@ const Header = ({logo})=> {
    const history = useHistory();
    
    const [searchSelected, setSearchSelected] = useState("");
+   const [category, setCategorySelected] = useState("All");
 
    useEffect(()=> {
         
@@ -47,8 +49,6 @@ const Header = ({logo})=> {
 
               if(categories_.isError === false)
               {
-
-                console.log(categories_);
                 setCategories((prev)=>{
 
                     return categories_.categories;
@@ -85,14 +85,45 @@ const logoutHandler = ()=>{
 
    // handle category changes.
    const categoryChange = (e)=>{
+
+            setCategorySelected(()=>e.target.value);
             
-            updateSearch({"serach": data.search.search, "category": e.target.value}, dispatch);
+            //updateSearch({"serach": data.search.search,"count":data.search.count, "min_price":data.search.min_price, "max_price":data.search.max_price ,"category": e.target.value}, dispatch);
    }
 
    // handle changes to the search bar
    const searchChange = (e)=>{
+
+            setSearchSelected(()=>e.target.value);
             
-            updateSearch({"serach": e.target.value, "category": data.search.category}, dispatch);
+            //updateSearch({"serach": e.target.value, "category": data.search.category, "search_products":data.search.search_products ,"count":data.search.count, "min_price":data.search.min_price, "max_price":data.search.max_price}, dispatch);
+   }
+
+
+   // handle search
+   const handleSearch = (e)=>
+   {
+
+      e.preventDefault();
+
+      (async ()=>{
+        let searchResults = await getProductsByCustomParams({'count':data.search.count, 'min_price':data.search.min_price, 'max_price':data.search.max_price, 'category':category, 'name':searchSelected});
+
+        if(searchResults.isError === false)
+        {
+          console.log(searchResults);
+
+          updateSearch({"serach": searchSelected,"count":data.search.count, "search_products":searchResults.products, "min_price":data.search.min_price, "max_price":data.search.max_price ,"category": category}, dispatch);
+        }
+
+        if(window.location.pathname !== "/shop")
+        {
+            history.push("/shop");
+        }
+
+      })();
+
+
    }
 
   return (
@@ -121,9 +152,9 @@ const logoutHandler = ()=>{
                     {/* The search bar nav */}
                     <Nav className="me-auto">
 
-                    <Form className="d-flex mt-2">
+                    <form className="d-flex mt-2" method="post" onSubmit={handleSearch}>
 
-                        <select className="categoryDropdown" value={data.search.category} onChange={categoryChange}>
+                        <select className="categoryDropdown" value={category} onChange={categoryChange}>
 
 
                             {categories.map((category, index) =>(
@@ -134,23 +165,23 @@ const logoutHandler = ()=>{
 
                         </select>
 
-                        <FormControl
+                        <input
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                         onChange={searchChange}
-                        value={data.search.search}
+                        value={searchSelected}
                         
                         className = "rounded-0"
                         />
-                        <Button variant="outline-success" className="searchButton primary-color">Search</Button>
-                    </Form>
+                        <button type="submit" className="btn searchButton primary-color">Search</button>
+                    </form>
                     </Nav>
 
                     {/* right links */}
                     <Nav className="mr-auto">
 
-                        <Nav.Link to="/shop" as={link}>Shop</Nav.Link>
+                        <Nav.Link to="/shop" as={link}> Shop</Nav.Link>
                         <Nav.Link to="/contact" as={link}>Contact Us</Nav.Link>
                         <NavDropdown title="My Account" id="collasible-nav-dropdown">
                             

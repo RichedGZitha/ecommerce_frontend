@@ -26,7 +26,7 @@ const ResetPassword = ()=>{
     const dispatch = useDispatch();
 
     useEffect(()=>{
-            document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Reset Password`;
+            document.title = `Reset Password - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
     }, []);
 

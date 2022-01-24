@@ -60,7 +60,7 @@ const fetchProducts = async () => {
     useEffect(()=> {
         
        fetchProducts();
-       document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Home`;
+       document.title = `Home - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
        // fetch every: 30 seconds.
        const interval=setInterval(()=>{
@@ -95,16 +95,16 @@ const fetchProducts = async () => {
 
               {special.length > 0 &&
                  
-                    <div className="row">
+                    <div className="row gy-4">
                       <h3 className="section-title">On Special</h3>
-                      {special.map((data,index)=>(<div key={index} className="col-6 col-xxl-2 col-md-3 mb-2 p-1"><ProductItem product={data} isSpecial={true} /></div>))}
+                      {special.map((data,index)=>(<div key={index} className="col-sm "><ProductItem product={data} isSpecial={true} /></div>))}
                     </div>
 
                }
 
               
                {featured.length > 0 &&
-                  <div className="row">
+                  <div className="row mt-4 gy-4">
                     <h3 className="section-title">Featured Products</h3>
                     {featured.map((data,index)=>(<div key={index} className="col-6 col-xxl-2 col-md-4 mb-2 p-1 col-sm-4"><ProductItem product={data} isFeatured={true} /></div>))}
                   </div>

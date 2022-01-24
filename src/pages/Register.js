@@ -27,7 +27,7 @@ const Register = ()=>{
 
     useEffect(()=>{
 
-            document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Signup`;
+            document.title = `Signup - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
     }, []);
 

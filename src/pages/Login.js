@@ -35,7 +35,7 @@ const Signin = ()=>{
 
     useEffect(()=>{
 
-        document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Signin`;
+        document.title = `Signin - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
     }, []);
 
@@ -164,7 +164,6 @@ const Signin = ()=>{
                              {showErrors instanceof Array && showErrors}
                         </div>
                 }
-
 
                 <Form id="loginForm" onSubmit={handleLoginPOST}>
 

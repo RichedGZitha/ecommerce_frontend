@@ -53,4 +53,42 @@ async function getUserInfo(dispatch)
 }
 
 
-export {getUserInfo};
+
+async function getShipmentInfo()
+{
+    let isError = false;
+    let error_messages = [];
+    let data = undefined;
+
+    const url = "/get-shipment-address/";
+    
+    await axiosBase.get(url, {headers:header})
+    .then((response)=>{
+
+        if(response.data)
+        {
+            data = response.data;
+        }
+
+    }).catch((error)=>{
+
+        if(error.response)
+        {
+            isError = true;
+            error_messages = [...error_messages, error.response.data['detail']];
+        }
+
+        else
+        {
+            isError = true;
+            error_messages = [...error_messages, 'Something went wrong. Please try again.'];
+        }
+
+    });
+
+    
+    return {'isError': isError,"data":data , 'errors': error_messages};
+}
+
+
+export {getUserInfo, getShipmentInfo};

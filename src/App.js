@@ -3,6 +3,7 @@ import './App.css';
 
 // replace with cdn version instead.
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'material-icons/iconfont/material-icons.css';
 
 import Register from './pages/Register';
 import Login from './pages/Login';

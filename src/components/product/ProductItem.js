@@ -1,18 +1,22 @@
 import Button from 'react-bootstrap/Button';
 
 import { useSelector, useDispatch} from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link as link, useHistory, useLocation, useParams } from 'react-router-dom';
 
-import { useState } from "react";
+import Alert from 'react-bootstrap/Alert';
+
+import { useState, useEffect } from "react";
 import {addToCart} from '../../services/cartService';
 import '../../App.css'
+
+import Stars from "../Stars";
 
 
 function ProductItem({product, isSpecial = false, isFeatured = false, membership=false}) {
 
    let history = useHistory();
    const dispath = useDispatch();
-   
+ 
    const addToCartHandler = ()=>{
 
       const id = product.id;
@@ -37,37 +41,36 @@ function ProductItem({product, isSpecial = false, isFeatured = false, membership
 
   return (
 
-      <div className="card rounded-0">
+      <div className="card rounded-0 h-100 card-width">
 
-        <img src={product.front_image} className="img-fluid" alt="Image"  onClick={gotoProductDetails}/>
+        <img src={product.front_image} className="img card-img-top" alt="Image"  onClick={gotoProductDetails} height="150" width="150" />
         <div className="card-body">
             {isFeatured === true ?<span className="badge rounded-pill bg-success">Featured</span>:''}
             {isSpecial === true ?<span className="badge rounded-pill bg-danger">On Special</span>:''}
             {membership === true ?<span className="badge rounded-pill bg-primary text-wrap">Membership Discount</span>:''}
 
-            <h5 className="card-title text-wrap text-link" onClick={gotoProductDetails}>{product.name}  
-            </h5>
+            <h6 className="card-title text-wrap text-link" onClick={gotoProductDetails}>{product.name}  
+            </h6>
 
 
-            {isSpecial
-            ? 
-              <p><span className="text-decoration-line-through small">R {product.Price}</span> <span className="text-danger text-nowrap">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</span></p>
-            : <p className="text-danger">R {new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</p>}
+            <div className="d-flex align-content-end flex-wrap">
+                {isSpecial
+                ? 
+                  <p><span className="text-decoration-line-through small">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</span> <span className="text-danger text-nowrap">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</span></p>
+                : <p className="text-danger">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(product.price)}</p>}
 
 
-          {/* TODO: render avarage star count out of 5 */}
-            {product.stars
-              ? <p></p>
+                <Stars stars_count={product.average_stars} no_text={true} />
 
-              : ''
-            }
+                {product.in_stock === true &&
+                
+                  <Button variant="primary" onClick={addToCartHandler} className="btn-pill primary-color col-12 mb-2 text-nowrap"> Add to Cart  <span className="material-icons align-middle">shopping_cart</span></Button>
 
+                }
 
+                <Button variant="warning" onClick={gotoProductDetails} className="btn-pill border border-warning text-dark col-12 text-nowrap"> See Details </Button>{' '}
 
-            <Button variant="primary" onClick={addToCartHandler} className="btn-pill primary-color col-12 mb-2 text-nowrap"> Add to Cart</Button>{' '}
-
-            <Button variant="warning" onClick={gotoProductDetails} className="btn-pill border border-warning text-dark col-12 text-nowrap"> See Details </Button>{' '}
-
+            </div>
         </div>
       </div>
   );

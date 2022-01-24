@@ -53,7 +53,7 @@ const PaymentConfirmation =({isSuccessful= false})=>{
 
         if(isSuccessful === true)
         {
-            document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Payment Successful`;
+            document.title = `Payment Successful - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
         }
         
 

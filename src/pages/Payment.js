@@ -49,7 +49,7 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
     			history.push("/signin?next=" + encodeURIComponent('/payment'))
     		}
 
-    		document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Payment`;
+    		document.title = `Payment - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
     		(async ()=> {
     			

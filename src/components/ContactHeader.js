@@ -44,7 +44,7 @@ const ContactHeader = ()=> {
                 
                     {/* The search bar nav */}
                     <Nav className="me-auto">
-                        <Nav.Link href="mailto:email@email.com" className="d-none d-sm-block"> email@email.com</Nav.Link>
+                        <Nav.Link href="mailto:email@email.com" className="d-none d-sm-block"><span className="material-icons align-middle">email</span> email@email.com</Nav.Link>
                     </Nav>
 
                     {/* right links */}
@@ -66,7 +66,7 @@ const ContactHeader = ()=> {
                             
                             {
                                 currencies.map((currency, index)=>(
-                                    <NavDropdown.Item href="#" key={index}> {currency} </NavDropdown.Item>
+                                    <NavDropdown.Item href="#" key={index}> {currency !== "YEN"? currency : <>{currency} <span className="material-icons align-middle">currency_yen</span></>} </NavDropdown.Item>
                                 ))
                             }
                             

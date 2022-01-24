@@ -9,7 +9,7 @@ const DoesNotExist = ()=>{
 
     useEffect(()=>{
 
-        document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Page Not Found`;
+        document.title = `Page Not Found - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
 
     }, []);
 

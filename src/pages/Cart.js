@@ -86,7 +86,7 @@ const Cart =()=>{
     }
 
     useEffect(()=>{
-      document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Cart`;
+      document.title = `Cart - ${CONSTANTS.ECOM_WEBSITE_NAME}`;
     }, []);
 
     const renderCartItems = ()=>{
@@ -182,7 +182,7 @@ const Cart =()=>{
                           <hr/>
                           <p className="d-inline-block"><span className="text-md-wrap text-xl-nowrap">Grandtotal (inc. Tax, shipping etc)</span> <br/> <span className="cart-grandtotal">{new Intl.NumberFormat("en-ZA", {style: "currency", currency: "ZAR"}).format(calculateGrandTotal(cart.cart, 0.15))}</span> </p>
 
-                          <button className="btn btn-pill primary-color text-white form-control" type="button" onClick={checkout}> Proceed to Checkout </button>
+                          <button className="btn btn-pill primary-color text-white form-control" type="button" onClick={checkout}> Proceed to Checkout <span className="material-icons align-middle">shopping_cart_checkout</span> </button>
 
                         </div>
                       </div>

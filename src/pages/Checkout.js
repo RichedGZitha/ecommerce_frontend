@@ -24,6 +24,8 @@ import { getCartCountStore,
          calculateTax,
          removeAllCart} from '../services/cartService';
 
+import {getShipmentInfo} from "../services/userService";
+
 import '../App.css';
 import {CONSTANTS} from '../constants';
 
@@ -47,7 +49,7 @@ const Checkout =()=>{
     const history = useHistory();
     const location = useLocation();
 
-    const [street_name, setStreetname] = useState('');
+    const [street_address, setStreetaddress] = useState('');
     const [suburb, setSuburb] = useState('');
     const [city, setCity] = useState('');
     const [province, setProvince] = useState('');
@@ -61,9 +63,9 @@ const Checkout =()=>{
     const [email, setEmail] = useState(cart.user.email);
 
 
-    const streetnameChangeHandler = (e)=>{
+    const streetaddressChangeHandler = (e)=>{
 
-      setStreetname(()=>e.target.value);
+      setStreetaddress(()=>e.target.value);
 
     }
 
@@ -139,7 +141,7 @@ const Checkout =()=>{
           history.push('/signin?next=' + encodeURIComponent('/checkout'));
         }
 
-        document.title = `${CONSTANTS.ECOM_WEBSITE_NAME} - Checkout`;
+        document.title = `Checkout - ${CONSTANTS.ECOM_WEBSITE_NAME} `;
 
        }, []);
 
@@ -151,9 +153,10 @@ const Checkout =()=>{
         {
 
             // save information to cart.
+            console.log(phone);
            
             const shipping = {'firstname':firstname, 'lastname':lastname, 'email':email, 
-            'phone':phone, 'street_name':street_name, 
+            'phone':phone, 'street_address':street_address, 
             'country':country, 'postal_code':postal_code, 'province':province, 'city':city, 'suburb':suburb};
             
             localStorage.setItem(CONSTANTS.ECOM_USER_SHIPPING, JSON.stringify(shipping));
@@ -169,6 +172,75 @@ const Checkout =()=>{
 
     }
 
+    // get shipment from the users profile.
+    const getShippingInfo = ()=>{
+
+      (async ()=>{
+
+          let shipmentResult = await getShipmentInfo();
+          
+          if(shipmentResult.isError === false)
+          {
+            let shipment = shipmentResult.data;
+
+              // update the province
+              if(shipment.province !== null)
+              {
+                setProvince((prev)=>shipment.province);
+              }
+
+              // update the postal code
+              if(shipment.postal_code !== null)
+              {
+                setPostalcode((prev)=>shipment.postal_code);
+              }
+
+              // update the street address
+              if(shipment.street_address !== null)
+              {
+                setStreetaddress((prev)=>shipment.street_address);
+              }
+
+
+              // update the phone number.
+              if(shipment.phone !== null)
+              {
+                setPhone((prev)=>shipment.phone);
+              }
+
+
+              // update the city.
+              if(shipment.city !== null)
+              {
+                setCity((prev)=>shipment.city);
+              }
+
+              // update the country.
+              if(shipment.country !== null)
+              {
+                setCountry((prev)=>shipment.country);
+              }
+
+
+              // update the suburb.
+              if(shipment.suburb !== null)
+              {
+                setSuburb((prev)=>shipment.suburb);
+              }
+
+
+              // update the email address.
+              if(shipment.email !== null)
+              {
+                setEmail((prev)=>shipment.email);
+              }
+
+          }
+
+      })();
+
+    }
+
 
     return (
         <div className="container">
@@ -180,6 +252,28 @@ const Checkout =()=>{
                     <div className="col-md-6 col-xl-7 col-12 mt-xs-4 mt-sm-4 mt-md-0">
 
                       <p className="fs-4">Fill in Shipping Information</p>
+                      <br/>
+
+                      <div className="row">
+
+                        <div className="col-12">
+
+                            <div className="badge badge-default">
+
+                                <p className="text-dark lead">Autocomplete this information from your profile?  <span className="text-muted">Save time.</span></p>
+                                <p className="text-dark"><strong>NB</strong>: This going to work properly if you completed filling your profile information. </p>
+
+
+                                <button className="btn btn-lg btn-primary float-start" onClick={getShippingInfo}> Yes </button>
+
+                            </div>
+
+
+                        </div>
+
+                      </div>
+
+                      <br/>
                       <form method="post" onSubmit={shippingSumbitHandler} className="mt-4">
 
                           <div className="form-group mt-2">
@@ -215,29 +309,30 @@ const Checkout =()=>{
                                       defaultCountry="ZA"
                                       required
                                       name="phone"
+                                      id="phone"
                                       className="form-control"
-                                    onChange={setPhone} />
+                                      onChange={setPhone} />
 
                           </div>
 
                           <div className="form-group mt-2">
 
-                              <label className="form-label" forhtml="street_name">Street name & number </label>
-                              <input type="text" className="form-control" id="street_name" name="street_name"  onChange={streetnameChangeHandler} required />
+                              <label className="form-label" forhtml="street_address">Street name & number </label>
+                              <input type="text" className="form-control" id="street_address" name="street_name"  onChange={streetaddressChangeHandler} value={street_address} required />
 
                           </div>
 
                            <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="suburb">Suburb (Optional)</label>
-                              <input type="text" className="form-control" id="suburb" name="suburb"  onChange={suburbChangeHandler}/>
+                              <input type="text" className="form-control" id="suburb" name="suburb"  onChange={suburbChangeHandler} value={suburb}/>
 
                           </div>
 
                           <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="city">City</label>
-                              <input type="text" className="form-control" id="city" name="city"  onChange={cityChangeHandler} required/>
+                              <input type="text" className="form-control" id="city" name="city"  onChange={cityChangeHandler} value={city} required/>
 
                           </div>
 
@@ -251,6 +346,7 @@ const Checkout =()=>{
                               <div className="col-12 col-md-8 mb-2 mb-md-0">
                                 <CountryDropdown
                                   value={country}
+                                  id="country"
                                   onChange={(val) => setCountry(val)} 
                                     required
                                     className="form-select"
@@ -263,6 +359,7 @@ const Checkout =()=>{
                                   <RegionDropdown
                                     country={country}
                                     value={province}
+                                    id="province"
                                     onChange={(val) => setProvince(val)} 
                                     className="form-select"
                                     required
@@ -277,12 +374,12 @@ const Checkout =()=>{
                           <div className="form-group mt-2">
 
                               <label className="form-label" forhtml="postal_code">Postal Code</label>
-                              <input type="text" className="form-control" id="postal_code" name="postal_code"  onChange={postalcodeChangeHandler} required/>
+                              <input type="text" className="form-control" id="postal_code" name="postal_code" value={postal_code} onChange={postalcodeChangeHandler} required/>
 
                           </div>
 
                           <div className="form-group mt-4">
-                              <button className="btn btn-pill primary-color text-white form-control" type="submit"> Proceed to Payment </button>
+                              <button className="btn btn-pill primary-color text-white form-control" type="submit"> Proceed to Payment <span className="material-icons align-middle">payment</span> </button>
                           </div>
                           
 
