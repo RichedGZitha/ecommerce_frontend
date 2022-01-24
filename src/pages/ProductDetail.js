@@ -93,7 +93,7 @@ const handleEmailSubmit =(e)=>
 	e.preventDefault();
 
 	// submit an amail
-	console.log(e.target.email.value);
+	//console.log(e.target.email.value);
 }
 
 // use effect

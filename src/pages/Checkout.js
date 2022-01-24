@@ -153,7 +153,6 @@ const Checkout =()=>{
         {
 
             // save information to cart.
-            console.log(phone);
            
             const shipping = {'firstname':firstname, 'lastname':lastname, 'email':email, 
             'phone':phone, 'street_address':street_address, 

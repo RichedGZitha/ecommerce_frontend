@@ -87,17 +87,13 @@ const logoutHandler = ()=>{
    const categoryChange = (e)=>{
 
             setCategorySelected(()=>e.target.value);
-            
-            //updateSearch({"serach": data.search.search,"count":data.search.count, "min_price":data.search.min_price, "max_price":data.search.max_price ,"category": e.target.value}, dispatch);
    }
 
    // handle changes to the search bar
    const searchChange = (e)=>{
 
             setSearchSelected(()=>e.target.value);
-            
-            //updateSearch({"serach": e.target.value, "category": data.search.category, "search_products":data.search.search_products ,"count":data.search.count, "min_price":data.search.min_price, "max_price":data.search.max_price}, dispatch);
-   }
+  }
 
 
    // handle search
@@ -111,8 +107,6 @@ const logoutHandler = ()=>{
 
         if(searchResults.isError === false)
         {
-          console.log(searchResults);
-
           updateSearch({"serach": searchSelected,"count":data.search.count, "search_products":searchResults.products, "min_price":data.search.min_price, "max_price":data.search.max_price ,"category": category}, dispatch);
         }
 

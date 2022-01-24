@@ -77,9 +77,6 @@ const Cart =()=>{
 
           const toUpdate = cart.cart[index];
 
-
-          //console.log(quantity.value);
-
           updateSingleItem(toUpdate.id, quantity, dispatch);    
           
 

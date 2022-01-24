@@ -41,8 +41,6 @@ const removeFromCart = (id, dispatch) =>{
         localStorage.setItem(CONSTANTS.ECOM_CART, JSON.stringify(newCart));
         dispatch(actionCreators.updateCartActionCreator(newCart));
 
-        //console.log(newCart);
-
     }
 
 }
