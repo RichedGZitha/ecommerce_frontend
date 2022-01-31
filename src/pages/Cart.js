@@ -42,7 +42,7 @@ const Cart =()=>{
 
     const gotoShop = ()=>{
 
-        history.push('/');
+        history.push('/shop');
 
     }
 

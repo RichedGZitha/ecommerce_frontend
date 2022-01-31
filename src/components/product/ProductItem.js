@@ -43,13 +43,13 @@ function ProductItem({product, isSpecial = false, isFeatured = false, membership
 
       <div className="card rounded-0 h-100 card-width">
 
-        <img src={product.front_image} className="img card-img-top" alt="Image"  onClick={gotoProductDetails} height="150" width="150" />
+        <img src={product.front_image} className="img card-img-top change-cursor" alt="Image"  onClick={gotoProductDetails} height="150" width="150" />
         <div className="card-body">
             {isFeatured === true ?<span className="badge rounded-pill bg-success">Featured</span>:''}
             {isSpecial === true ?<span className="badge rounded-pill bg-danger">On Special</span>:''}
             {membership === true ?<span className="badge rounded-pill bg-primary text-wrap">Membership Discount</span>:''}
 
-            <h6 className="card-title text-wrap text-link" onClick={gotoProductDetails}>{product.name}  
+            <h6 className="card-title text-wrap text-link change-cursor" onClick={gotoProductDetails}>{product.name}  
             </h6>
 
 

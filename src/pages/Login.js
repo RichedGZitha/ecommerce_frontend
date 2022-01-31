@@ -1,15 +1,14 @@
 import '../App.css';
-import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 
 import { Link as link } from 'react-router-dom';
-import { useHistory, useParams, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react"
 
-import {login, refreshTokenRequest} from '../services/authService';
+import {login} from '../services/authService';
 import {getUserInfo} from '../services/userService';
 
 import { store } from 'react-notifications-component';
@@ -17,15 +16,12 @@ import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
 import {CONSTANTS} from '../constants';
-
-const getRefreshToken = (state) => state.loginReducer.refresh;
 	
 const Signin = ()=>{
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isError, setIsError] = useState(false);
-	const refresh = useSelector(getRefreshToken);
 
     const search = useLocation().search;
     const next = new URLSearchParams(search).get('next');;
@@ -184,7 +180,7 @@ const Signin = ()=>{
                     
                     <div className="form-group">
                         
-                        <input type="submit" role="button" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Sign in"/> 
+                        <input type="submit" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Sign in"/> 
                         <br></br>
 
                         <Alert.Link to="/reset-password" as={link} className="mr-auto">Forgot your Password?</Alert.Link>

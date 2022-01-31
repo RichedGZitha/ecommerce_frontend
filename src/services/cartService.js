@@ -1,7 +1,5 @@
-import axiosInstance from "./axiosBase";
 import {CONSTANTS} from '../constants';
 import  { actionCreators } from '../state/actions/actionCreators';
-import {header} from './header';
 
 
 // get the index of the product item.

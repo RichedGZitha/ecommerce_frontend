@@ -4,8 +4,6 @@ import  {actionCreators} from '../state/actions/actionCreators';
 // refresh token
 async function refreshTokenRequest(refresh, dispatch)
 {
-    let isError = false;
-    let invalidToken = false;
     let error_messages = [];
 
     const url = "/auth/v1/jwt/refresh/";
@@ -44,7 +42,7 @@ async function refreshTokenRequest(refresh, dispatch)
                             // expired or invalid token.
                             if(data['code'] === "token_not_valid")
                             {
-                                invalidToken = true;
+                                //invalidToken = true;
                             }
 
                         }
@@ -59,13 +57,12 @@ async function refreshTokenRequest(refresh, dispatch)
                         // update the state.
                         if(error_messages.length > 0)
                         {
-                            isError = true;
+                            //isError = true;
                         }
 
                         else
                         {
                             error_messages = [...error_messages, 'Something went wrong.'];
-                            isError = true;
                         }
                     }
 
@@ -73,7 +70,6 @@ async function refreshTokenRequest(refresh, dispatch)
                     else
                     {
                         error_messages = [...error_messages, 'Something went wrong. It may be due to your internet connection.'];
-                        isError = true;
                     }
                     
               });

@@ -3,10 +3,6 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Link as link, useHistory, useLocation } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
-
 import '../App.css';
 import {CONSTANTS} from '../constants';
 import {getAllCategories, getProductsByCategory, getProductsByCustomParams} from "../services/productService";
@@ -28,9 +24,7 @@ const mapStateToProps = (state) =>
 
       const [categories, setCategories] = useState([]);
       const [products, setProducts] = useState([]);
-
-      const [showproducts, setShowProducts] = useState([]);
-      
+  
       const [count, setCount] = useState(10);
       const search =  useSelector(mapStateToProps);
       const dispatch = useDispatch();
@@ -69,7 +63,7 @@ const mapStateToProps = (state) =>
 
             })();
 
-      }, [])
+      }, [count, dispatch, search.category, search.count, search.max_price, search.min_price, search.search, search.search_products]);
 
 
       useEffect(()=>{
@@ -78,13 +72,16 @@ const mapStateToProps = (state) =>
         {
             setProducts(()=>search.search_products);
         }
+
+
         
-      });
+      }, [search.search_products]);
 
       // get products as per category
       const getByCategory = (e)=>{
 
         const selectedCategory = e.target.firstChild.data;
+        //e.target.className="change-cursor active mr-auto text-dark border border-outline-danger";
 
         // refresh products.
         ( async ()=>{
@@ -92,7 +89,7 @@ const mapStateToProps = (state) =>
 
           if (newProducts.isError === false)
           {
-              updateSearch({"serach": search.search,"count":search.count,"search_products":newProducts.products ,"min_price":search.min_price, "max_price":search.max_price ,"category": selectedCategory}, dispatch);
+              setProducts(()=>newProducts.products);
           }
 
         })();
@@ -119,7 +116,7 @@ const mapStateToProps = (state) =>
       // renders the list of categories.
       const renderCategories = ()=>
       {
-        const items = categories.map((value, index)=><li key={index} onClick={getByCategory}>  <a variant="default" className="mr-auto text-purple">{value}</a> </li>);
+        const items = categories.map((value, index)=><li key={index} onClick={getByCategory}>  <span variant="default" className="change-cursor mr-auto text-purple">{value}</span> </li>);
         return (<ul className="unstyle-list">
                 {items}
           </ul>);
@@ -197,7 +194,7 @@ const mapStateToProps = (state) =>
                 <div className="row">
 
                     <div className="col-4">
-                      <p> <span className="text-danger fs-4">{products.length } </span> Products Found {search.search !== undefined && `for \"${search.search}\"`} </p>
+                      <p> <span className="text-danger fs-4">{products.length } </span> Products Found {search.search !== undefined && `for "${search.search}"`} </p>
                     </div>
                 </div>
 

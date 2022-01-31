@@ -9,6 +9,8 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Error404 from './pages/Error404';
 import Header from './components/Header';
+import Footer from "./components/Footer";
+
 import ContactHeader from './components/ContactHeader';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
@@ -26,8 +28,6 @@ import ReactNotifications from 'react-notifications-component';
 
 
 function App() {
-
-	const [cartCount, setCartCount] = useState(0);
 
   return (
 	  <Fragment>
@@ -52,6 +52,7 @@ function App() {
 			</Switch>
 
 			<Newsletter/>
+			<Footer />
         </BrowserRouter>
 
 	  </Fragment>

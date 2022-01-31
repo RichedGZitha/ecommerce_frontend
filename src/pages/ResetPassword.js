@@ -1,12 +1,12 @@
 import '../App.css';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 
 import { Link as link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { useState, useEffect } from "react"
 
 import {password_reset} from '../services/authService';
@@ -137,7 +137,7 @@ const ResetPassword = ()=>{
                     
                     <div className="form-group">
                         
-                        <input type="submit" role="button" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Reset Password"/> 
+                        <input type="submit" id="submit" variant="whiteborder" className="primary-color rounded-pill form-control text-white" value="Reset Password"/> 
                         <br></br>
 
                         <Alert.Link to="/signup" as={link} className="mr-auto">No account? Sign up</Alert.Link>

@@ -1,6 +1,7 @@
-import {getUserLocal, setAccessTokewn} from './getAuthUser';
+import {getUserLocal} from './getAuthUser';
 
 
-export const header = {
+export const header = 
+{
         'Authorization': getUserLocal() !== undefined ? "Bearer " +  getUserLocal()["access"] : "Bearer hellow",
-    };
+ };

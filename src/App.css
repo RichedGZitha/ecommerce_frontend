@@ -148,3 +148,14 @@ body {
 {
   max-width: 15rem;
 }
+
+
+
+.change-cursor {
+  cursor: pointer;
+}
+
+
+.full{
+  width:inherit !important;
+}

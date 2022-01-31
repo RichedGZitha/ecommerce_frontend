@@ -1,5 +1,4 @@
-import { Link as link, useHistory, useLocation, useParams } from 'react-router-dom';
-import ProductItem from "../components/product/ProductItem";
+import { Link as link, useHistory, useParams } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs'
@@ -7,7 +6,7 @@ import Tab from 'react-bootstrap/Tab'
 
 import Alert from 'react-bootstrap/Alert';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import {getSingleProduct} from '../services/productService';
 import {addToCart} from '../services/cartService';
@@ -18,28 +17,24 @@ import '../App.css'
 import {CONSTANTS} from '../constants';
 
 // maps the props to the reducer state.
-const mapStateToProps = (state) => {
+/*const mapStateToProps = (state) => {
 		
 		return {
 			login: state.loginReducer,
 			user: state.userReducer
 		}
 	}
-
+*/
 
 
 function ProductDetail({isSpecial = false, isFeatured = false, membership=false}) {
    
-   const user = useSelector(mapStateToProps);
    const [isLoading, setIsLoading] = useState(true);
    const [product, setProduct] = useState({});
 
    const { id } = useParams();
    const dispatch = useDispatch();
    const history = useHistory();
-
-   const [someURL, setSomeURL] = useState('');
-
 
    const gotoCart = ()=>
    {
@@ -80,12 +75,12 @@ function ProductDetail({isSpecial = false, isFeatured = false, membership=false}
 
    }
 
-const  renderSimilars = ()=>{
+/*const  renderSimilars = ()=>{
 
   const items = product.similar.map((data,index)=><ProductItem product={data} key={index} className="col-3"/>);
   return items;
 
-}
+}*/
 
 // handle the email submission
 const handleEmailSubmit =(e)=>

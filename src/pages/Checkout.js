@@ -1,28 +1,26 @@
 import React from 'react';
 
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { Link as link, useHistory, useLocation } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
+import { useHistory} from 'react-router-dom';
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
-import { getCartCountStore, 
-         removeFromCart, 
-         getAllCartProducts, 
+
+import { getCartCountStore,  
          calculateSubtotalPrice, 
          calculateGrandTotal,
          getDiscount,
          getShippingCost,
-         updateSingleItem,
-         calculateTax,
-         removeAllCart} from '../services/cartService';
+         calculateTax,} from '../services/cartService';
 
 import {getShipmentInfo} from "../services/userService";
 
@@ -45,9 +43,7 @@ const mapStateToProps = (state) => {
 const Checkout =()=>{
 
     let cart = useSelector(mapStateToProps);
-    const dispatch = useDispatch();
     const history = useHistory();
-    const location = useLocation();
 
     const [street_address, setStreetaddress] = useState('');
     const [suburb, setSuburb] = useState('');
@@ -130,7 +126,7 @@ const Checkout =()=>{
     // go to shopping.
     const gotoShop = ()=>{
 
-        history.push('/');
+        history.push('/shop');
 
     }
 
@@ -233,6 +229,19 @@ const Checkout =()=>{
               {
                 setEmail((prev)=>shipment.email);
               }
+
+                // show notification.
+                    store.addNotification({
+                        title: 'Shipping Information Successful',
+                        message: 'You have successfully fetched your shipping information.',
+                        type: 'success',                         // 'default', 'success', 'info', 'warning'
+                        container: 'top-left',                // where to position the notifications
+                        animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+                        animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+                        dismiss: {
+                          duration: 0
+                        }
+                    });
 
           }
 

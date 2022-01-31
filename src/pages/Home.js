@@ -1,6 +1,3 @@
-import Button from 'react-bootstrap/Button';
-
-import { useSelector} from 'react-redux';
 import { useState, useEffect } from "react";
 import {getSpecialProducts, getFeaturedProducts} from '../services/productService';
 import ProductItem from '../components/product/ProductItem';
@@ -12,18 +9,19 @@ function Home(props) {
 	     
    const [special, setSpecial] = useState([]);
    const [featured, setFeatured] = useState([]);
-   const [daily, setDaily] = useState([]);
-   const [brands, setBrands] = useState([]);
+   // const [daily, setDaily] = useState([]);
+   // const [brands, setBrands] = useState([]);
    const [isLoading, setIsLoading] = useState(true);
 
 
    // renders the specials.
-   const renderSpecials = ()=>{
+   /*const renderSpecials = ()=>
+   {
 
-  const items = special.map((data,index)=><ProductItem product={data} key={index} className="col-3"/>);
-  return items;
+        const items = special.map((data,index)=><ProductItem product={data} key={index} className="col-3"/>);
+        return items;
 
-}
+    }*/
 
 // fetch data
 const fetchProducts = async () => {
@@ -85,7 +83,7 @@ const fetchProducts = async () => {
           
           <div className="text-center mt-4">
             <div className="spinner-border" role="status">
-               <span className="visually-hidden">Loading</span>
+               <span className="visually-hidden"> Loading...</span>
              </div>
           </div>
 
